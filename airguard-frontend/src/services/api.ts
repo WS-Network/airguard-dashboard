@@ -169,6 +169,50 @@ class ApiService {
       method: 'POST',
     });
   }
+
+  // NetWatch Integration methods
+  async getConnectionStatus(): Promise<any> {
+    return this.request('/api/network/connection-status', {
+      method: 'GET',
+    });
+  }
+
+  async triggerNetworkScan(): Promise<any> {
+    return this.request('/api/network/scan', {
+      method: 'POST',
+    });
+  }
+
+  async getDiscoveredDevices(): Promise<any> {
+    return this.request('/api/network/discovered-devices', {
+      method: 'GET',
+    });
+  }
+
+  async setupSnmp(ip: string, username: string, password: string, deviceId?: string): Promise<any> {
+    return this.request('/api/network/setup-snmp', {
+      method: 'POST',
+      body: JSON.stringify({ ip, username, password, deviceId }),
+    });
+  }
+
+  async getWifiDevices(): Promise<any> {
+    return this.request('/api/network/wifi-devices', {
+      method: 'GET',
+    });
+  }
+
+  async getInterference(): Promise<any> {
+    return this.request('/api/network/interference', {
+      method: 'GET',
+    });
+  }
+
+  async getNetwatchStatus(): Promise<any> {
+    return this.request('/api/network/status', {
+      method: 'GET',
+    });
+  }
 }
 
 // Create and export a singleton instance

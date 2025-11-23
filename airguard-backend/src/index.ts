@@ -10,6 +10,7 @@ import { authController } from '@/controllers/authController';
 import { deviceController } from '@/controllers/deviceController';
 import { settingsController } from '@/controllers/settingsController';
 import * as pairingController from '@/controllers/pairingController';
+import { netwatchController } from '@/controllers/netwatchController';
 import { authenticateToken, requireOrganization } from '@/middleware/auth';
 import { deviceSimulator } from '@/services/deviceSimulator';
 import { getDongleGateway } from '@/services/dongleGateway';
@@ -122,6 +123,16 @@ app.get('/api/settings', authenticateToken, settingsController.getUserSettings);
 app.put('/api/settings', authenticateToken, settingsController.updateUserSettings);
 app.post('/api/settings/test-key/:keyType', authenticateToken, settingsController.testApiKey);
 app.delete('/api/settings/delete-key/:keyType', authenticateToken, settingsController.deleteApiKey);
+
+// NetWatch integration routes
+app.get('/api/network/connection-status', authenticateToken, netwatchController.getConnectionStatus);
+app.post('/api/network/scan', authenticateToken, requireOrganization, netwatchController.triggerNetworkScan);
+app.get('/api/network/discovered-devices', authenticateToken, requireOrganization, netwatchController.getDiscoveredDevices);
+app.post('/api/network/setup-snmp', authenticateToken, requireOrganization, netwatchController.setupSnmp);
+app.get('/api/network/wifi-devices', authenticateToken, requireOrganization, netwatchController.getWifiDevices);
+app.get('/api/network/interference', authenticateToken, requireOrganization, netwatchController.getInterference);
+app.get('/api/network/all-data', authenticateToken, requireOrganization, netwatchController.getAllData);
+app.get('/api/network/status', authenticateToken, netwatchController.getServiceStatus);
 
 // Dashboard routes
 app.get('/api/dashboard/metrics', authenticateToken, requireOrganization, (req, res) => {
