@@ -1,0 +1,44 @@
+[
+  {
+    "mac": "e4:8d:8c:62:3f:8d",
+    "signal": -28,
+    "freq": 5180,
+    "timestamp": "2025-07-01T23:25:56.748547",
+    "interfering": false
+  },
+  {
+    "mac": "e4:8d:8c:62:3f:8d",
+    "signal": -31,
+    "freq": 5180,
+    "timestamp": "2025-07-01T23:25:57.472640",
+    "interfering": false
+  },
+  {
+    "mac": "e4:8d:8c:62:3f:8d",
+    "signal": -30,
+    "freq": 5180,
+    "timestamp": "2025-07-01T23:25:57.998190",
+    "interfering": false
+  },
+  {
+    "mac": "e4:8d:8c:62:3f:8d",
+    "signal": -28,
+    "freq": 5180,
+    "timestamp": "2025-07-01T23:26:58.432426",
+    "interfering": false
+  },
+  {
+    "mac": "e4:8d:8c:62:3f:8d",
+    "signal": -31,
+    "freq": 5180,
+    "timestamp": "2025-07-01T23:26:58.926339",
+    "interfering": false
+  },
+  {
+    "mac": "e4:8d:8c:62:3f:8d",
+    "signal": -30,
+    "freq": 5180,
+    "timestamp": "2025-07-01T23:26:59.412061",
+    "interfering": false
+  }
+]

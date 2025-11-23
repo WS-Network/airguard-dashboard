@@ -1,0 +1,27 @@
+# jan/09/1970 13:33:56 by RouterOS 6.48
+# software id = P8YW-DW1M
+#
+# model = SXT G-5HPnD r2
+# serial number = 557805A1CA4C
+/interface wireless
+set [ find default-name=wlan1 ] antenna-gain=0 band=5ghz-a/n channel-width=\
+    20/40mhz-Ce country=no_country_set disabled=no frequency=6080 \
+    frequency-mode=superchannel mode=station-bridge radio-name=AP2 scan-list=\
+    4900-6100 ssid=AP2
+/interface pppoe-client
+add add-default-route=yes disabled=no interface=wlan1 name=pppoe-out1 \
+    password=12345 service-name=333 use-peer-dns=yes user=AP2
+/interface wireless security-profiles
+set [ find default=yes ] supplicant-identity=AP2
+/ip pool
+add name=dhcp_pool0 ranges=192.157.54.100-192.157.54.200
+/ip dhcp-server
+add address-pool=dhcp_pool0 interface=ether1 name=dhcp1
+/ip address
+add address=192.168.1.55/24 interface=ether1 network=192.168.1.0
+/ip firewall nat
+add action=masquerade chain=srcnat src-address=192.157.54.0/24
+/snmp
+set enabled=yes
+/system identity
+set name=AP2

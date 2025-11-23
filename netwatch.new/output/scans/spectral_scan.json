@@ -1,0 +1,21 @@
+{
+  "timestamp": "2025-11-21T06:58:46.562281",
+  "scan": [
+    {
+      "freq": "2.4GHz",
+      "value": 60
+    },
+    {
+      "freq": "5GHz",
+      "value": 75
+    },
+    {
+      "freq": "Noise",
+      "value": -98
+    },
+    {
+      "freq": "Utilization",
+      "value": 0
+    }
+  ]
+}

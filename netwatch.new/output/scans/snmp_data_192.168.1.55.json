@@ -1,0 +1,15 @@
+{
+  "snmp": {
+    "sysDescr": "\"RouterOS RB SXT G-5HPnD r2\"",
+    "sysUpTime": "Timeticks: (4883700) 13:33:57.00",
+    "sysName": "\"AP2\"",
+    "cpuLoad": "330",
+    "freeMemory": "239",
+    "boardModel": "N/A",
+    "temperature": "No Such Object available on this agent at this OID",
+    "interfaces": "No Such Object available on this agent at this OID",
+    "ifInOctets": "No Such Object available on this agent at this OID",
+    "ifOutOctets": "No Such Object available on this agent at this OID"
+  },
+  "export": "# jan/09/1970 13:33:56 by RouterOS 6.48\r\n# software id = P8YW-DW1M\r\n#\r\n# model = SXT G-5HPnD r2\r\n# serial number = 557805A1CA4C\r\n/interface wireless\r\nset [ find default-name=wlan1 ] antenna-gain=0 band=5ghz-a/n channel-width=\\\r\n    20/40mhz-Ce country=no_country_set disabled=no frequency=6080 \\\r\n    frequency-mode=superchannel mode=station-bridge radio-name=AP2 scan-list=\\\r\n    4900-6100 ssid=AP2\r\n/interface pppoe-client\r\nadd add-default-route=yes disabled=no interface=wlan1 name=pppoe-out1 \\\r\n    password=12345 service-name=333 use-peer-dns=yes user=AP2\r\n/interface wireless security-profiles\r\nset [ find default=yes ] supplicant-identity=AP2\r\n/ip pool\r\nadd name=dhcp_pool0 ranges=192.157.54.100-192.157.54.200\r\n/ip dhcp-server\r\nadd address-pool=dhcp_pool0 interface=ether1 name=dhcp1\r\n/ip address\r\nadd address=192.168.1.55/24 interface=ether1 network=192.168.1.0\r\n/ip firewall nat\r\nadd action=masquerade chain=srcnat src-address=192.157.54.0/24\r\n/snmp\r\nset enabled=yes\r\n/system identity\r\nset name=AP2"
+}

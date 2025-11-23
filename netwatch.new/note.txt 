@@ -1,0 +1,36 @@
+project/
+├── ai_model/
+│   └── wifi_rf_model.joblib                  # Trained AI model
+
+├── core/
+│   ├── ai_detector.py                        # Uses trained model for prediction
+│   ├── feature_extractor.py                  # Extracts features from packets
+│   ├── live_receiver.py                      # Receives live data
+│   ├── pcap_runner.py                        # Analyzes .pcap files
+│   ├── network_control_probe.py              # 🔥 Full device/port scan + login
+│   ├── auto_fix.py                           # 🔧 Uses SSH to change channel if needed
+│   ├── relay_control.py                      # (optional) Controls antenna rotation
+│   └── dashboard.py                          # (optional) Flask UI
+
+├── scripts/
+│   ├── enable_monitor_ai.sh                  # Sets interface to monitor mode
+│   ├── scan_runner.sh                        # Full system loop (scan → parse → detect)
+
+├── logs/
+│   ├── wifi_log.csv                          # Wi-Fi scan logs
+│   └── controlled_devices.json               # Stores successful logins
+
+
+
+[Scan Wi-Fi]         → [Parse to CSV]       → [Run AI detection] 
+  (iwlist)              (wifi_scan_parser)     (ai_detector.py)
+
+[Scan network IPs & MACs] → [Scan open ports] → [Try remote control login]
+    (network_control_probe.py does all 3)
+
+[Optional remote data input]
+  → (live_receiver.py)
+
+[Store results]
+  → (wifi_log.csv + controlled_devices.json)
+

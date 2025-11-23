@@ -1,0 +1,125 @@
+[
+  {
+    "ip": "192.168.1.100",
+    "mac": "60:01:94:BE:56:6A",
+    "vendor": "Espressif Inc.",
+    "ports": [
+      8081
+    ],
+    "os": "Espressif esp8266 firmware (lwIP stack)",
+    "os_accuracy": "94%",
+    "ssh_telnet_missing": true,
+    "uptime": ""
+  },
+  {
+    "ip": "192.168.1.101",
+    "mac": "5C:CF:7F:67:2B:42",
+    "vendor": "Unknown",
+    "ports": [
+      8081
+    ],
+    "os": "Espressif esp8266 firmware (lwIP stack)",
+    "os_accuracy": "94%",
+    "ssh_telnet_missing": true,
+    "uptime": ""
+  },
+  {
+    "ip": "192.168.1.102",
+    "mac": "C0:F8:53:15:6B:66",
+    "vendor": "Unknown",
+    "ports": [],
+    "os": "Unknown",
+    "os_accuracy": "0%",
+    "ssh_telnet_missing": true,
+    "uptime": ""
+  },
+  {
+    "ip": "192.168.1.103",
+    "mac": "6C:3B:6B:C0:E0:97",
+    "vendor": "Routerboard.com",
+    "ports": [],
+    "os": "Unknown",
+    "os_accuracy": "0%",
+    "ssh_telnet_missing": true,
+    "uptime": ""
+  },
+  {
+    "ip": "192.168.1.107",
+    "mac": "92:69:7B:64:63:AE",
+    "vendor": "Unknown",
+    "ports": [],
+    "os": "Unknown",
+    "os_accuracy": "0%",
+    "ssh_telnet_missing": true,
+    "uptime": ""
+  },
+  {
+    "ip": "192.168.1.109",
+    "mac": "N/A",
+    "vendor": "Unknown",
+    "ports": [
+      22,
+      111,
+      631,
+      7070,
+      8080
+    ],
+    "os": "Linux 2.6.32",
+    "os_accuracy": "100%",
+    "ssh_telnet_missing": false,
+    "uptime": ""
+  },
+  {
+    "ip": "192.168.1.254",
+    "mac": "DC:8E:8D:19:2F:0C",
+    "vendor": "Unknown",
+    "ports": [
+      80,
+      443
+    ],
+    "os": "Linux 2.6.32 - 3.10",
+    "os_accuracy": "100%",
+    "ssh_telnet_missing": true,
+    "uptime": ""
+  },
+  {
+    "ip": "192.168.1.55",
+    "mac": "E4:8D:8C:62:3F:8C",
+    "vendor": "Routerboard.com",
+    "ports": [
+      21,
+      22,
+      23,
+      80,
+      2000
+    ],
+    "os": "Linux 2.6.32 - 3.10",
+    "os_accuracy": "100%",
+    "ssh_telnet_missing": false,
+    "uptime": "",
+    "export": "# jan/09/1970 13:33:56 by RouterOS 6.48\r\n# software id = P8YW-DW1M\r\n#\r\n# model = SXT G-5HPnD r2\r\n# serial number = 557805A1CA4C\r\n/interface wireless\r\nset [ find default-name=wlan1 ] antenna-gain=0 band=5ghz-a/n channel-width=\\\r\n    20/40mhz-Ce country=no_country_set disabled=no frequency=6080 \\\r\n    frequency-mode=superchannel mode=station-bridge radio-name=AP2 scan-list=\\\r\n    4900-6100 ssid=AP2\r\n/interface pppoe-client\r\nadd add-default-route=yes disabled=no interface=wlan1 name=pppoe-out1 \\\r\n    password=12345 service-name=333 use-peer-dns=yes user=AP2\r\n/interface wireless security-profiles\r\nset [ find default=yes ] supplicant-identity=AP2\r\n/ip pool\r\nadd name=dhcp_pool0 ranges=192.157.54.100-192.157.54.200\r\n/ip dhcp-server\r\nadd address-pool=dhcp_pool0 interface=ether1 name=dhcp1\r\n/ip address\r\nadd address=192.168.1.55/24 interface=ether1 network=192.168.1.0\r\n/ip firewall nat\r\nadd action=masquerade chain=srcnat src-address=192.157.54.0/24\r\n/snmp\r\nset enabled=yes\r\n/system identity\r\nset name=AP2",
+    "snmp": {
+      "sysDescr": "\"RouterOS RB SXT G-5HPnD r2\"",
+      "sysUpTime": "Timeticks: (4883700) 13:33:57.00",
+      "sysName": "\"AP2\"",
+      "cpuLoad": "330",
+      "freeMemory": "239",
+      "boardModel": "N/A",
+      "temperature": "No Such Object available on this agent at this OID",
+      "interfaces": "No Such Object available on this agent at this OID",
+      "ifInOctets": "No Such Object available on this agent at this OID",
+      "ifOutOctets": "No Such Object available on this agent at this OID"
+    },
+    "log": "sysDescr: \"RouterOS RB SXT G-5HPnD r2\"<br>sysUpTime: Timeticks: (4883700) 13:33:57.00<br>sysName: \"AP2\"<br>cpuLoad: 330<br>freeMemory: 239<br>boardModel: N/A<br>temperature: No Such Object available on this agent at this OID<br>interfaces: No Such Object available on this agent at this OID<br>ifInOctets: No Such Object available on this agent at this OID<br>ifOutOctets: No Such Object available on this agent at this OID<br><b>EXPORT:</b><br># jan/09/1970 13:33:56 by RouterOS 6.48\r<br># software id = P8YW-DW1M\r<br>#\r<br># model = SXT G-5HPnD r2\r<br># serial number = 557805A1CA4C\r<br>/interface wireless\r<br>set [ find default-name=wlan1 ] antenna-gain=0 band=5ghz-a/n channel-width=\\\r<br>    20/40mhz-Ce country=no_country_set disabled=no frequency=6080 \\\r<br>    frequency-mode=superchannel mode=station-bridge radio-name=AP2 scan-list=\\\r<br>    4900-6100 ssid=AP2\r<br>/interface pppoe-client\r<br>add add-default-route=yes disabled=no interface=wlan1 name=pppoe-out1 \\\r<br>    password=12345 service-name=333 use-peer-dns=yes user=AP2\r<br>/interface wireless security-profiles\r<br>set [ find default=yes ] supplicant-identity=AP2\r<br>/ip pool\r<br>add name=dhcp_pool0 ranges=192.157.54.100-192.157.54.200\r<br>/ip dhcp-server\r<br>add address-pool=dhcp_pool0 interface=ether1 name=dhcp1\r<br>/ip address\r<br>add address=192.168.1.55/24 interface=ether1 network=192.168.1.0\r<br>/ip firewall nat\r<br>add action=masquerade chain=srcnat src-address=192.157.54.0/24\r<br>/snmp\r<br>set enabled=yes\r<br>/system identity\r<br>set name=AP2"
+  },
+  {
+    "ip": "192.168.1.56",
+    "mac": "6C:3B:6B:C0:E0:97",
+    "vendor": "Unknown",
+    "ports": [],
+    "os": "Unknown",
+    "os_accuracy": "0%",
+    "ssh_telnet_missing": true,
+    "uptime": ""
+  }
+]
