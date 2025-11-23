@@ -1,0 +1,23 @@
+{
+  "name": "airguard-mqtt-postgresql-bridge",
+  "version": "1.0.0",
+  "description": "MQTT to PostgreSQL bridge for Airguard",
+  "main": "bridge.js",
+  "type": "module",
+  "scripts": {
+    "start": "node bridge.js",
+    "dev": "nodemon bridge.js"
+  },
+  "keywords": ["mqtt", "postgresql", "iot"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "mqtt": "^5.3.4",
+    "pg": "^8.11.3",
+    "dotenv": "^16.3.1",
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
