@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { DeviceData } from "@/data/map-data";
+import { apiService } from "@/services/api";
 import {
   ChevronUp,
   ChevronDown,
@@ -67,6 +68,8 @@ export default function DeviceSetupTable({
   const [sshPassword, setSshPassword] = useState("");
   const [isWaitingForGps, setIsWaitingForGps] = useState(false);
   const [gpsData, setGpsData] = useState<GpsData | null>(null);
+  const [pairingSessionId, setPairingSessionId] = useState<string | null>(null);
+  const [pollIntervalId, setPollIntervalId] = useState<NodeJS.Timeout | null>(null);
 
   const handleSort = (field: SortField) => {
     if (field === sortField) {
@@ -142,29 +145,82 @@ export default function DeviceSetupTable({
     setIsWaitingForGps(false);
   };
 
-  const handleNextStep = () => {
+  const handleNextStep = async () => {
     setCurrentStep(2);
     setIsWaitingForGps(true);
+
+    try {
+      // Start pairing session with backend
+      const response = await apiService.startPairing(selectedDevice?.id);
+      setPairingSessionId(response.sessionId);
+
+      // Start polling for GPS data
+      startPollingForGps(response.sessionId);
+    } catch (error) {
+      console.error('Failed to start pairing:', error);
+      setIsWaitingForGps(false);
+    }
   };
 
   const handlePreviousStep = () => {
+    // Stop polling if going back
+    if (pollIntervalId) {
+      clearInterval(pollIntervalId);
+      setPollIntervalId(null);
+    }
     setCurrentStep(1);
     setIsWaitingForGps(false);
+    setPairingSessionId(null);
   };
 
-  const handleTestGpsData = () => {
-    // Simulate receiving GPS data
-    const dummyGpsData: GpsData = {
-      latitude: 33.8938 + (Math.random() * 0.01),
-      longitude: 35.5018 + (Math.random() * 0.01),
-      altitude: 100 + (Math.random() * 50),
-      accuracy: 5 + (Math.random() * 5),
-      heading: Math.random() * 360,
-      timestamp: new Date().toISOString(),
-    };
-    setGpsData(dummyGpsData);
-    setIsWaitingForGps(false);
+  const handleTestGpsData = async () => {
+    // Call backend test endpoint
+    try {
+      const response = await apiService.testDongle();
+      if (response.gpsData) {
+        setGpsData(response.gpsData);
+        setIsWaitingForGps(false);
+      }
+    } catch (error) {
+      console.error('Failed to test dongle:', error);
+    }
   };
+
+  const startPollingForGps = (sessionId: string) => {
+    // Poll every 2 seconds
+    const intervalId = setInterval(async () => {
+      try {
+        const status = await apiService.getPairingStatus(sessionId);
+
+        if (status.status === 'paired' && status.gpsData) {
+          // GPS data received!
+          setGpsData(status.gpsData);
+          setIsWaitingForGps(false);
+          clearInterval(intervalId);
+          setPollIntervalId(null);
+        } else if (status.status === 'timeout') {
+          // Pairing timed out
+          setIsWaitingForGps(false);
+          clearInterval(intervalId);
+          setPollIntervalId(null);
+          console.error('Pairing session timed out');
+        }
+      } catch (error) {
+        console.error('Failed to check pairing status:', error);
+      }
+    }, 2000);
+
+    setPollIntervalId(intervalId);
+  };
+
+  // Cleanup polling on unmount
+  useEffect(() => {
+    return () => {
+      if (pollIntervalId) {
+        clearInterval(pollIntervalId);
+      }
+    };
+  }, [pollIntervalId]);
 
   const handleFinish = () => {
     if (selectedDevice && gpsData) {
@@ -174,6 +230,11 @@ export default function DeviceSetupTable({
   };
 
   const handleCloseModal = () => {
+    // Stop polling if active
+    if (pollIntervalId) {
+      clearInterval(pollIntervalId);
+      setPollIntervalId(null);
+    }
     setShowAddModal(false);
     setSelectedDevice(null);
     setCurrentStep(1);
@@ -181,6 +242,7 @@ export default function DeviceSetupTable({
     setSshPassword("");
     setGpsData(null);
     setIsWaitingForGps(false);
+    setPairingSessionId(null);
   };
 
   const clearAllFilters = () => {

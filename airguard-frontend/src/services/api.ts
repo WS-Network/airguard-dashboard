@@ -142,6 +142,33 @@ class ApiService {
       method: 'POST',
     });
   }
+
+  // Device Pairing methods
+  async startPairing(deviceId?: string): Promise<{ sessionId: string; status: string }> {
+    return this.request('/api/devices/pair/start', {
+      method: 'POST',
+      body: JSON.stringify({ deviceId: deviceId || null }),
+    });
+  }
+
+  async getPairingStatus(sessionId: string): Promise<any> {
+    return this.request(`/api/devices/pair/status/${sessionId}`, {
+      method: 'GET',
+    });
+  }
+
+  async syncGps(deviceId: string, gpsData: any): Promise<any> {
+    return this.request(`/api/devices/${deviceId}/gps-sync`, {
+      method: 'POST',
+      body: JSON.stringify(gpsData),
+    });
+  }
+
+  async testDongle(): Promise<any> {
+    return this.request('/api/devices/test-dongle', {
+      method: 'POST',
+    });
+  }
 }
 
 // Create and export a singleton instance
