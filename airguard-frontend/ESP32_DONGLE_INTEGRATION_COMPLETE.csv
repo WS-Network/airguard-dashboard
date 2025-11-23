@@ -1,0 +1,224 @@
+Section,Component,Type,Technology,Location,Description,Status,Notes,Dependencies,Data_Flow
+ARCHITECTURE,Dongle Microservice,Backend Service,Python 3.11,airguard-backend/dongle-service/,Standalone Docker service that reads ESP32 serial data and publishes to Redis,Complete,Reads from /dev/ttyUSB0 via pyserial,Redis,ESP32 → Serial → Gateway → Redis
+ARCHITECTURE,Dashboard Backend,Backend API,Node.js 24 + Express,airguard-backend/src/,REST API server handling authentication and device management,Complete,Subscribes to Redis dongle:data channel,PostgreSQL + Redis,Redis → Backend → PostgreSQL → Frontend
+ARCHITECTURE,Dashboard Frontend,Web Application,Next.js 15.3.3 + React 19.0.0,src/app/,User interface for device setup and GPS pairing,Complete,Port 3000 (not 3003),Next.js + API Service,Backend API → Frontend → Browser
+ARCHITECTURE,PostgreSQL Database,Database,PostgreSQL 15,Docker container,Stores all device data including 19 dongle fields,Complete,Port 5543,None,Backend → PostgreSQL
+ARCHITECTURE,Redis,Cache/PubSub,Redis 7,Docker container,Message broker for dongle data events,Complete,Port 6379,None,Dongle Service → Redis → Backend
+ARCHITECTURE,Prisma Studio,Database GUI,Node.js,Docker container,Visual database management tool,Complete,Port 5555,PostgreSQL,N/A
+
+DATABASE_SCHEMA,Device Model,Table,Prisma ORM,prisma/schema.prisma,Main device table with 19 dongle fields,Complete,Total 40+ fields including existing + dongle,None,N/A
+DATABASE_SCHEMA,latitude,Field (GPS),Float,Device.latitude,GPS latitude coordinate,Complete,Example: 33.888630,None,Dongle → Device
+DATABASE_SCHEMA,longitude,Field (GPS),Float,Device.longitude,GPS longitude coordinate,Complete,Example: 35.495480,None,Dongle → Device
+DATABASE_SCHEMA,altitude,Field (GPS),Float,Device.altitude,GPS altitude in meters,Complete,Example: 79.2,None,Dongle → Device
+DATABASE_SCHEMA,gpsAccuracy,Field (GPS),Float,Device.gpsAccuracy,GPS accuracy in meters,Complete,Example: 3.5,None,Dongle → Device
+DATABASE_SCHEMA,heading,Field (GPS),Float,Device.heading,GPS heading/bearing,Complete,Example: 0,None,Dongle → Device
+DATABASE_SCHEMA,dongleGpsFix,Field (GPS),Int,Device.dongleGpsFix,GPS fix status (0=no fix 1=fix),Complete,0 or 1,None,Dongle → Device
+DATABASE_SCHEMA,dongleSatellites,Field (GPS),Int,Device.dongleSatellites,Number of GPS satellites,Complete,Range: 0-12,None,Dongle → Device
+DATABASE_SCHEMA,accelerometerX,Field (IMU),Float,Device.accelerometerX,Accelerometer X-axis in m/s²,Complete,Example: 0.15,None,Dongle → Device
+DATABASE_SCHEMA,accelerometerY,Field (IMU),Float,Device.accelerometerY,Accelerometer Y-axis in m/s²,Complete,Example: -0.08,None,Dongle → Device
+DATABASE_SCHEMA,accelerometerZ,Field (IMU),Float,Device.accelerometerZ,Accelerometer Z-axis in m/s² (gravity),Complete,Example: 9.82,None,Dongle → Device
+DATABASE_SCHEMA,gyroscopeX,Field (IMU),Float,Device.gyroscopeX,Gyroscope X-axis in rad/s,Complete,Example: 0.02,None,Dongle → Device
+DATABASE_SCHEMA,gyroscopeY,Field (IMU),Float,Device.gyroscopeY,Gyroscope Y-axis in rad/s,Complete,Example: -0.01,None,Dongle → Device
+DATABASE_SCHEMA,gyroscopeZ,Field (IMU),Float,Device.gyroscopeZ,Gyroscope Z-axis in rad/s,Complete,Example: 0.00,None,Dongle → Device
+DATABASE_SCHEMA,temperature,Field (IMU),Float,Device.temperature,Temperature in Celsius,Complete,Example: 25.3,None,Dongle → Device
+DATABASE_SCHEMA,dongleBatchId,Field (Metadata),String,Device.dongleBatchId,Unique batch ID (8-char hex),Complete,Example: A3F5B21C,None,Dongle → Device
+DATABASE_SCHEMA,dongleSessionMs,Field (Metadata),Int,Device.dongleSessionMs,Session duration in milliseconds,Complete,Example: 10000,None,Dongle → Device
+DATABASE_SCHEMA,dongleSampleCount,Field (Metadata),Int,Device.dongleSampleCount,Number of IMU samples collected,Complete,Example: 200,None,Dongle → Device
+DATABASE_SCHEMA,dongleDateYMD,Field (Timestamp),Int,Device.dongleDateYMD,Date in YYYYMMDD format,Complete,Example: 20251117,None,Dongle → Device
+DATABASE_SCHEMA,dongleTimeHMS,Field (Timestamp),Int,Device.dongleTimeHMS,Time in HHMMSS format,Complete,Example: 103045,None,Dongle → Device
+DATABASE_SCHEMA,dongleMsec,Field (Timestamp),Int,Device.dongleMsec,Milliseconds (0-999),Complete,Example: 456,None,Dongle → Device
+DATABASE_SCHEMA,setupComplete,Field (Status),Boolean,Device.setupComplete,Two-stage setup completion flag,Complete,false → true after dongle sync,None,Backend Logic
+DATABASE_SCHEMA,gpsConfigured,Field (Status),Boolean,Device.gpsConfigured,GPS configuration status,Complete,Set to true after GPS sync,None,Backend Logic
+DATABASE_SCHEMA,PairingSession,Table,Prisma ORM,prisma/schema.prisma,Temporary pairing session tracking,Complete,60-second timeout,None,Backend → PairingSession
+DATABASE_SCHEMA,GpsLog,Table,Prisma ORM,prisma/schema.prisma,Audit log of GPS sync events,Complete,Tracks all GPS updates,Device,Backend → GpsLog
+DATABASE_SCHEMA,Organization,Table,Prisma ORM,prisma/schema.prisma,Multi-tenancy organization model,Complete,Required for pairing endpoint,User,User → Organization → Devices
+DATABASE_SCHEMA,User,Table,Prisma ORM,prisma/schema.prisma,User authentication and profile,Complete,Must have organizationId,Organization,Auth → User
+
+BACKEND_API,POST /api/devices/pair/start,Endpoint,REST API,src/controllers/pairingController.ts,Create pairing session (with optional deviceId),Complete,Returns sessionId and status:waiting,authenticateToken + requireOrganization,Frontend → Backend → PairingSession → Redis
+BACKEND_API,GET /api/devices/pair/status/:sessionId,Endpoint,REST API,src/controllers/pairingController.ts,Check pairing session status and get GPS/IMU data,Complete,Returns waiting/paired/timeout/error with data,authenticateToken,Frontend → Backend → PairingSession
+BACKEND_API,POST /api/devices/test-dongle,Endpoint,REST API,src/controllers/pairingController.ts,Simulate dongle button press (testing),Complete,Injects test data into Redis dongle:data channel,authenticateToken,Test Script → Backend → Redis
+BACKEND_API,POST /api/devices/:deviceId/gps-sync,Endpoint,REST API,src/controllers/pairingController.ts,Manual GPS sync for device,Complete,Updates device GPS coordinates,authenticateToken + requireOrganization,Frontend → Backend → Device
+BACKEND_API,POST /api/auth/login,Endpoint,REST API,src/controllers/authController.ts,User login with JWT token generation,Complete,Returns user + accessToken + refreshToken,None,Frontend → Backend → User
+BACKEND_API,GET /api/auth/profile,Endpoint,REST API,src/controllers/authController.ts,Get current user profile,Complete,Returns user object with organizationId,authenticateToken,Frontend → Backend → User
+BACKEND_API,POST /api/auth/logout,Endpoint,REST API,src/controllers/authController.ts,Logout and invalidate refresh token,Complete,Clears user session,authenticateToken,Frontend → Backend → UserSession
+
+BACKEND_SERVICE,DongleGateway,Class,TypeScript,src/services/dongleGateway.ts,Manages dongle data conversion and Redis publishing,Complete,Singleton pattern getDongleGateway(),Redis,Backend → DongleGateway → Redis
+BACKEND_SERVICE,PairingController,Controller,TypeScript,src/controllers/pairingController.ts,Handles pairing endpoints and background workers,Complete,Subscribes to Redis on pairing start,PairingSession + Device + GpsLog,Frontend → Controller → Background Worker
+BACKEND_SERVICE,Background Worker,Service,TypeScript,src/controllers/pairingController.ts startPairingWorker(),Listens to Redis dongle:data and creates/updates device,Complete,Runs for 60 seconds per session,Redis + Prisma,Redis Subscriber → Worker → Database
+BACKEND_SERVICE,AuthService,Service,TypeScript,src/services/authService.ts,Authentication logic (signup login tokens),Complete,Handles JWT generation and validation,User + Organization + UserSession,Frontend → AuthService → Database
+BACKEND_SERVICE,OrganizationFix Script,Utility,TypeScript,src/scripts/fix-user-organizations.ts,Assigns organizationId to users without one,Complete,Run via: npm run db:fix-orgs,User + Organization,Script → Database
+
+FRONTEND_COMPONENT,GPS Modal (Integrated),Component,React 19 + Framer Motion,src/app/dashboard/setup/page.tsx (lines 1412-1624),Modal component that displays waiting state then GPS+IMU data,Complete,Uses AnimatePresence for transitions state managed in parent page,Pairing API + getErrorMessage,User Click → Modal → API Poll → Display Data → Close
+FRONTEND_COMPONENT,Device Setup Page,Page Component,Next.js 15 App Router,src/app/dashboard/setup/page.tsx,6-step device setup wizard with GPS pairing and managed devices,Complete,Multi-step form with progress stepper and GPS modal integration,Sidebar + GPS Modal + DeviceMap,Dashboard → Setup Page → Steps → GPS Modal
+FRONTEND_COMPONENT,IMU Data Display Section,Component Section,React JSX,src/app/dashboard/setup/page.tsx (lines 1536-1586),Displays accelerometer gyroscope and temperature from dongle,Complete,Purple-themed card with grid layout shows X/Y/Z axes + units,GPS Modal,Pairing Status API → GPS Modal → IMU Section
+FRONTEND_COMPONENT,API Service,Singleton Service,Fetch API + TypeScript,src/services/api.ts,Centralized API calling with httpOnly cookie authentication,Complete,No localStorage - all auth via cookies credentials: include,Backend API Routes,Component → apiService → Backend
+FRONTEND_COMPONENT,Error Handler Utility,Helper Function,TypeScript,src/app/dashboard/setup/page.tsx (lines 38-45),getErrorMessage helper prevents cyclic object errors,Complete,Safely extracts message from Error objects with fallback,None,Error Object → getErrorMessage → Safe String → Console
+FRONTEND_COMPONENT,Sidebar Navigation,Layout Component,React + Lucide Icons,src/components/sidebar/Sidebar.tsx,Main navigation sidebar with route highlighting,Complete,Dashboard menu with active state management,None,User → Sidebar → Navigation
+FRONTEND_COMPONENT,Loading Context,React Context,Context API,src/contexts/LoadingContext.tsx,Global loading state for navigation transitions,Complete,Provider wraps app shows loading screen during navigation,None,Page Transition → Loading State → UI
+FRONTEND_COMPONENT,Toast Context,React Context,Context API,src/contexts/ToastContext.tsx,Global toast notification system for user feedback,Complete,Provider wraps app supports success/error/info toasts,None,Action → showToast → Toast Display
+
+DONGLE_SERVICE,gateway.py,Script,Python 3.11,dongle-service/gateway.py,Main gateway script reading serial and publishing to Redis,Complete,280 lines 2 parsers (JSON + fenced block),pyserial + redis,Serial → Parse → Redis Publish
+DONGLE_SERVICE,Dockerfile,Container,Docker,dongle-service/Dockerfile,Docker container definition for gateway,Complete,Python 3.11-slim with USB device access,Base Image,Build → Image
+DONGLE_SERVICE,requirements.txt,Dependencies,Python,dongle-service/requirements.txt,Python dependencies for gateway,Complete,pyserial redis python-dotenv,None,pip install
+DONGLE_SERVICE,test-gateway.py,Test Script,Python,dongle-service/test-gateway.py,Simulates dongle data without ESP32 hardware,Complete,Publishes test data to Redis dongle:data,redis,Test → Redis
+DONGLE_SERVICE,.env.example,Configuration,Environment,dongle-service/.env.example,Environment template for serial port and Redis,Complete,SERIAL_PORT REDIS_HOST REDIS_CHANNEL,None,Copy to .env
+
+DOCKER_COMPOSE,postgres,Service,PostgreSQL 15,docker-compose.yml,Database service,Complete,Port 5543 volume: postgres_data,None,Backend → PostgreSQL
+DOCKER_COMPOSE,redis,Service,Redis 7,docker-compose.yml,Cache and pub/sub service,Complete,Port 6379 volume: redis_data,None,Dongle + Backend → Redis
+DOCKER_COMPOSE,backend,Service,Node.js 24,docker-compose.yml,Backend API service,Complete,Port 3001 depends on postgres + redis,PostgreSQL + Redis,Frontend → Backend
+DOCKER_COMPOSE,dongle-service,Service,Python 3.11,docker-compose.yml,Dongle gateway service,Complete,USB device pass-through depends on redis,Redis,ESP32 → Dongle Service
+DOCKER_COMPOSE,prisma-studio,Service,Node.js 24,docker-compose.yml,Database GUI service,Complete,Port 5555 depends on postgres,PostgreSQL,Browser → Prisma Studio
+
+DATA_FLOW,ESP32 Sender,Hardware,ESP-NOW,Physical device,User presses button sends data via ESP-NOW,Requires Hardware,Wireless transmission to receiver,ESP32 Receiver,Button Press → Wireless
+DATA_FLOW,ESP32 Receiver,Hardware,USB Serial,Physical device (USB dongle),Receives ESP-NOW data outputs to serial port,Requires Hardware,Connected via USB /dev/ttyUSB0,Dongle Service,Wireless → Serial
+DATA_FLOW,Serial Port,Interface,USB,/dev/ttyUSB0 or COM port,USB serial communication interface,Requires Hardware,115200 baud rate,Dongle Gateway,Hardware → Software
+DATA_FLOW,Dongle Gateway Parse,Process,Python,gateway.py parse functions,Parses serial data (JSON or fenced block format),Complete,Converts to standardized JSON,Redis Publisher,Serial → Parse
+DATA_FLOW,Redis Publish,Event,Redis PubSub,dongle:data channel,Publishes dongle JSON to Redis channel,Complete,Message format: DongleData interface,Backend Subscriber,Parse → Publish
+DATA_FLOW,Backend Subscribe,Event,Redis PubSub,dongle:data channel,Backend subscribes when pairing session starts,Complete,Background worker per session,Device Create/Update,Subscribe → Receive
+DATA_FLOW,Device Create/Update,Database Op,Prisma ORM,Device model,Creates new device or updates existing with 19 fields,Complete,Conditional based on deviceId parameter,Database,Worker → Database
+DATA_FLOW,GpsLog Create,Database Op,Prisma ORM,GpsLog model,Creates audit log entry for GPS sync,Complete,Tracks syncMethod: dongle,Database,Worker → Database
+DATA_FLOW,PairingSession Update,Database Op,Prisma ORM,PairingSession model,Updates session status to paired and stores deviceId,Complete,Sets status: paired,Database,Worker → Database
+DATA_FLOW,Frontend Poll,API Call,HTTP GET,/api/devices/pair/status/:sessionId,Frontend polls every 2 seconds for pairing status update,Complete,Polling implemented in handleUseGps with setInterval 2000ms,Backend API,Modal → Poll Loop → GET Request → Update State
+DATA_FLOW,Frontend Display,UI Update,React setState,setup/page.tsx state hooks,GPS and IMU data rendered in modal on status: paired,Complete,useState hooks update modal content when gpsData and imuData set,Browser,API Response → setGpsData/setImuData → Render
+
+TESTING,Manual E2E Test,Test Procedure,Manual,E2E-TESTING-NOW.md,Complete end-to-end testing workflow,Complete,Login → GPS Modal → Test Dongle → Verify,All Services,User → Browser → Terminal
+TESTING,Playwright MCP,Automated Testing,Playwright + MCP,playwright-mcp-config/,AI-assisted browser automation testing,Ready (Not Yet Run),10 test scenarios in TEST-PROMPTS.md,AI Client + Running Services,AI → Playwright → Browser
+TESTING,Test Dongle Endpoint,API Test,cURL,POST /api/devices/test-dongle,Simulates ESP32 button press without hardware,Complete,Injects standard test data,Backend API,Terminal → API → Redis
+TESTING,Prisma Studio Verification,Database Test,Visual Inspection,http://localhost:5555,Manual verification of 19 dongle fields populated,Manual Process,Check Device model latest entry,PostgreSQL,Browser → Prisma Studio
+TESTING,Redis Monitor,Integration Test,redis-cli SUBSCRIBE,dongle:data channel,Real-time monitoring of dongle messages,Manual Process,Watch messages flow through system,Redis,Terminal → Redis CLI
+
+CONFIGURATION,.env.local (Frontend),Config File,Environment,airguard-frontend/.env.local,Frontend environment configuration,Must Create,Copy from .env.example - NEXT_PUBLIC_API_URL DATABASE_URL JWT secrets,None,Load at Runtime
+CONFIGURATION,.env (Backend),Config File,Environment,airguard-backend/.env,Backend environment configuration,Must Create,Copy from .env.example DATABASE_URL JWT secrets,None,Load at Runtime
+CONFIGURATION,.env (Dongle),Config File,Environment,dongle-service/.env,Dongle service configuration,Optional,SERIAL_PORT REDIS_HOST defaults work for Docker,None,Load at Runtime
+CONFIGURATION,docker-compose.yml,Config File,Docker Compose,airguard-backend/docker-compose.yml,Multi-service orchestration,Complete,Defines all 5 services + networks + volumes,None,docker-compose up
+CONFIGURATION,prisma/schema.prisma,Schema File,Prisma,airguard-backend/prisma/schema.prisma,Database schema definition,Complete,Device model with 19 new dongle fields,None,npx prisma migrate
+CONFIGURATION,tsconfig.json (Backend),Config File,TypeScript,airguard-backend/tsconfig.json,TypeScript compiler configuration,Complete,Strict mode path aliases,None,tsc compile
+CONFIGURATION,tsconfig.json (Frontend),Config File,TypeScript,airguard-frontend/tsconfig.json,TypeScript compiler configuration,Complete,Strict mode Next.js paths,None,Next.js Build
+CONFIGURATION,next.config.ts,Config File,Next.js,airguard-frontend/next.config.ts,Next.js framework configuration,Complete,TypeScript ESLint ignore for build speed,None,Next.js Build
+CONFIGURATION,tailwind.config.js,Config File,Tailwind CSS,airguard-frontend/tailwind.config.js,Tailwind utility-first CSS configuration,Complete,Custom Airguard color palette ag-green ag-lime etc,None,CSS Build
+CONFIGURATION,playwright-mcp-config/claude-desktop-config.json,MCP Config,JSON,playwright-mcp-config/,Playwright MCP server configuration,Ready,Copy to AI client config location,AI Client,AI Client Load
+CONFIGURATION,playwright-mcp-config/airguard-init.ts,Init Script,TypeScript,playwright-mcp-config/,Playwright page initialization script,Complete,Sets geolocation grants permissions,Playwright,Page Load
+
+DOCUMENTATION,STEP-BY-STEP-FROM-NOW.md,Guide,Markdown,airguard-backend/,Complete setup instructions from current state,Complete,938 lines 3 phases with agent assignments,None,Local Agent Follow
+DOCUMENTATION,E2E-TESTING-NOW.md,Guide,Markdown,airguard-backend/,End-to-end testing instructions,Complete,384 lines skip Part 2,None,Local Agent Testing
+DOCUMENTATION,IMPLEMENTATION-ORDER.md,Guide,Markdown,airguard-backend/,Original 3-part implementation plan,Complete,765 lines detailed walkthrough,None,Reference
+DOCUMENTATION,COMMANDS-CHEATSHEET.md,Cheatsheet,Markdown,airguard-backend/,Quick command reference,Complete,285 lines copy-paste commands,None,Quick Reference
+DOCUMENTATION,PLAYWRIGHT-MCP-SETUP.md,Guide,Markdown,airguard-backend/,Playwright MCP setup and configuration,Complete,Full setup for Claude Desktop VS Code Cursor,None,MCP Setup
+DOCUMENTATION,PLAYWRIGHT-TESTING-GUIDE.md,Guide,Markdown,airguard-backend/,Testing strategies and comparison,Complete,468 lines MCP vs Standard tests,None,Testing Strategy
+DOCUMENTATION,playwright-mcp-config/TEST-PROMPTS.md,Test Scripts,Markdown,playwright-mcp-config/,10 copy-paste test prompts for AI,Complete,800+ lines ready-to-use prompts,AI Client,Copy to AI
+DOCUMENTATION,MICROSERVICES.md,Architecture,Markdown,airguard-backend/,Complete microservices architecture guide,Complete,500+ lines design principles,None,Architecture Reference
+DOCUMENTATION,LOCAL_TESTING_INSTRUCTIONS.md,Guide,Markdown,airguard-frontend/,Comprehensive frontend local testing guide,Complete,Created by Frontend Agent with Workflow A and B,None,Testing Reference
+DOCUMENTATION,LOCAL_TESTING_GUIDE.md,Guide,Markdown,airguard-backend/,Comprehensive backend local testing,Complete,Backend version with troubleshooting,None,Testing Reference
+DOCUMENTATION,QUICKSTART-DONGLE.md,Guide,Markdown,airguard-backend/,5-minute quick start,Complete,321 lines fast setup,None,Quick Start
+DOCUMENTATION,CLAUDE.md,Codebase Guide,Markdown,airguard-backend/,AI assistant guide for backend,Complete,Comprehensive codebase documentation,None,AI Context
+DOCUMENTATION,CLAUDE.md,Codebase Guide,Markdown,airguard-frontend/,AI assistant guide for frontend,Complete,Comprehensive frontend documentation,None,AI Context
+DOCUMENTATION,dongle-service/README.md,Service Docs,Markdown,dongle-service/,Dongle service specific documentation,Complete,250+ lines service guide,None,Dongle Reference
+DOCUMENTATION,FRONTEND_FIX_NEEDED.md,Issue Doc,Markdown,airguard-backend/,Frontend cyclic error fix instructions,Complete (Issue Resolved),Frontend agent already fixed this,None,Historical Reference
+
+WORKFLOWS,Two-Stage Device Creation,Business Logic,Backend,src/controllers/pairingController.ts,Port scan creates device (setupComplete=false) then dongle updates (setupComplete=true),Complete,Supports both new and existing devices,Device Model,Port Scan → Dongle → Complete
+WORKFLOWS,Pairing Session Lifecycle,State Machine,Backend,PairingSession model,waiting → paired/timeout/error within 60 seconds,Complete,Status transitions managed by worker,Redis Events,Create → Subscribe → Update → Expire
+WORKFLOWS,Organization Multi-Tenancy,Authorization,Backend,middleware/auth.ts requireOrganization,All pairing endpoints require user.organizationId,Complete,403 if missing organizationId,User Model,Login → Token → Middleware Check
+WORKFLOWS,GPS Sync with Audit Log,Data Integrity,Backend,pairingController.ts,Every GPS update creates GpsLog entry,Complete,Tracks syncMethod: dongle/manual,GpsLog Model,Device Update → Log Create
+WORKFLOWS,User Login Flow,User Flow,React + Next.js,src/app/login/page.tsx → /api/auth/login,Login form validates credentials JWT stored in httpOnly cookie redirect to dashboard,Complete,Cookies managed server-side no localStorage,Auth API Routes,Login Page → Submit → API → Set Cookie → Redirect /dashboard/home
+WORKFLOWS,GPS Modal Workflow,User Flow,React State Management,setup/page.tsx handleUseGps function,Click Use GPS → Modal open → Start polling → Display data → Confirm → Close,Complete,State: waiting → paired/timeout/error with 60s timeout,Pairing API,Button → setShowGpsModal(true) → POST pair/start → Poll GET status → Update → Close
+WORKFLOWS,Error Display,Error Handling,React + ToastContext,src/contexts/ToastContext.tsx,Errors shown via toast notifications at top of screen,Complete,Toast types: success error info with auto-dismiss 5s,Error Helper,Catch Error → showToast(message type) → Toast Component → Auto-dismiss
+
+TYPE_DEFINITIONS,DongleData,Interface,TypeScript,src/types/index.ts,Complete dongle data structure from ESP32,Complete,"19 fields: batchId sessionMs samples dateYMD timeHMS msec lat lon alt gpsFix sats ax ay az gx gy gz tempC receivedTs",Redis Message,Dongle → Backend
+TYPE_DEFINITIONS,Device,Interface,TypeScript,src/types/index.ts,Device model with all 19 dongle fields,Complete,Matches Prisma Device model structure,Database Record,Backend → Frontend
+TYPE_DEFINITIONS,PairingStatus,Response Type,TypeScript,src/types/index.ts,Pairing status API response,Complete,Includes gpsData + imuData + dongleBatchId when paired,API Response,Backend → Frontend
+TYPE_DEFINITIONS,GpsData,Object,TypeScript,Pairing status response,GPS coordinates from dongle,Complete,lat lon alt accuracy heading timestamp,API Response,Backend → Frontend
+TYPE_DEFINITIONS,ImuData,Object,TypeScript,Pairing status response,IMU sensor data from dongle,Complete,accelerometer{x y z} gyroscope{x y z} temperature,API Response,Backend → Frontend
+TYPE_DEFINITIONS,DeviceFormData,Props Interface,TypeScript,src/app/dashboard/setup/page.tsx (lines 37-70),Form data interface for device setup with all 19 dongle fields,Complete,Includes GPS IMU metadata timestamp fields all as strings for form handling,Setup Page,Form State
+TYPE_DEFINITIONS,ManagedDevice,State Interface,TypeScript,src/app/dashboard/setup/page.tsx (lines 105-112),Managed device object for port-scanned devices,Complete,id name ip manufacturer sshConfigured gpsConfigured,Managed Device Workflow,Port Scan → Managed Device List
+
+SECURITY,JWT Authentication,Mechanism,jsonwebtoken,middleware/auth.ts authenticateToken,Bearer token authentication for all protected routes,Complete,Access token 15m refresh token 7d,Auth Service,Request → Middleware → Verify
+SECURITY,Organization Check,Authorization,Express Middleware,middleware/auth.ts requireOrganization,Ensures user has organizationId before pairing,Complete,Returns 403 if missing,Auth Middleware,Token → Org Check → Allow/Deny
+SECURITY,Rate Limiting,Protection,express-rate-limit,src/index.ts,100 requests per 15 minutes per IP,Complete,Applied to all /api/* routes,None,IP → Rate Limiter
+SECURITY,CORS Configuration,Protection,cors,src/index.ts,Restricted origins localhost:3000 localhost:3003,Complete,Credentials: true,None,Browser → CORS Check
+SECURITY,Helmet Security Headers,Protection,helmet,src/index.ts,Standard security headers,Complete,XSS CSP etc.,None,Response Headers
+SECURITY,Password Hashing,Encryption,bcrypt,authService.ts,12 rounds bcrypt for passwords,Complete,Never store plain text,User Table,Password → Hash → Store
+SECURITY,API Key Encryption,Encryption,AES-256-GCM,utils/encryption.ts,Encrypt API keys before storing,Complete,OpenAI Anthropic keys,UserSettings,API Key → Encrypt → Store
+SECURITY,HttpOnly Cookies,Protection,cookie-parser,Frontend + Backend,JWT tokens in httpOnly cookies not accessible via JavaScript,Complete,Secure: true in production,Auth System,Server → Set-Cookie → Browser (no JS access)
+
+BRANCHES,Backend Testing Branch,Git Branch,Git,claude/testing-mi0b9h5vic67o86f-01KDpTwVgzXRbJTMu7D6TbPr,Backend code complete all commits pushed,Complete,All backend work here,None,Backend Development
+BRANCHES,Frontend Testing Branch,Git Branch,Git,claude/testing-01KFW6adLgAKjUb9c2rnFPud,Frontend code complete cyclic error fixed,Complete,All frontend work here - latest commit d3fcfbd,None,Frontend Development
+BRANCHES,Dongle Branch,Git Branch,Git,dongle,Original ESP32 dongle project code,Reference Only,Used for research read-only,None,Historical Reference
+
+DEPLOYMENT,Production Docker Build,Build Process,Docker Multi-stage,Dockerfile,Production-ready backend image,Complete,Node.js 24 LTS Alpine,None,Build → Image
+DEPLOYMENT,Docker Compose Stack,Orchestration,Docker Compose,docker-compose.yml,Full stack deployment 5 services,Complete,Single command: docker-compose up,All Services,Up → Running
+DEPLOYMENT,Database Migration,Deployment Step,Prisma Migrate,npx prisma migrate deploy,Apply migrations in production,Ready,Run before starting backend,PostgreSQL,Migrate → Deploy
+DEPLOYMENT,Environment Configuration,Setup,Environment Variables,.env files,Production environment setup,Manual Required,JWT secrets encryption keys database URLs,None,Configure → Deploy
+DEPLOYMENT,Frontend Build,Build Process,Next.js Build,npm run build,Production optimized static + server bundle,Complete,Output: .next/ directory with standalone server,Backend API,npm run build → .next/ → npm start
+DEPLOYMENT,Frontend Environment,Config,Environment Variables,.env.local or .env.production,Frontend environment variables for API URLs and configs,Required,NEXT_PUBLIC_API_URL NEXT_PUBLIC_APP_URL DATABASE_URL JWT secrets,None,Build-time and Runtime
+
+MIGRATIONS,20250117_add_complete_dongle_fields,Database Migration,SQL,prisma/migrations/,Adds 19 dongle fields to Device table,Ready to Apply,Creates new columns with nullable types,Prisma,Schema → SQL → Apply
+MIGRATIONS,Previous Migrations,Database Migrations,SQL,prisma/migrations/,All previous migrations for base schema,Applied,Device Organization User PairingSession GpsLog etc.,Prisma,Historical
+
+SCRIPTS,fix-user-organizations.ts,Utility Script,TypeScript,src/scripts/fix-user-organizations.ts,Assigns organizationId to users without one,Complete,npm run db:fix-orgs,Prisma,Script → Database
+SCRIPTS,seed.ts,Utility Script,TypeScript,src/scripts/seed.ts,Database seeding script,Complete,npm run db:seed,Prisma,Script → Database
+SCRIPTS,test-gateway.py,Test Script,Python,dongle-service/test-gateway.py,Test dongle service without ESP32,Complete,python test-gateway.py,Redis,Script → Redis
+SCRIPTS,simulate-dongle-press.py,Test Script,Python,dongle branch reference,Original dongle test script,Reference,Not used in new architecture,None,Historical
+
+ERRORS_FIXED,Cyclic Object Value,JavaScript Error,TypeError,Frontend error handling src/app/dashboard/setup/page.tsx,Console.error crashes when logging error objects with circular refs,Fixed,getErrorMessage() helper lines 38-45 safely extracts message,None,Error → getErrorMessage → Safe String
+ERRORS_FIXED,403 Forbidden,HTTP Error,Authorization,Organization requirement,Users without organizationId get 403,Fixed,Run npm run db:fix-orgs then re-login to get new JWT,Organization Fix Script,Missing Org → Fix → Re-login
+ERRORS_FIXED,DATABASE_URL Not Found,Environment Error,Prisma,Missing .env file,Migration fails without DATABASE_URL,Documented,Copy .env.example to .env or .env.local,Environment Setup,Copy → Configure
+
+PORTS,3000,Frontend App,HTTP,Frontend Next.js,Main web application user interface,Used,Set in package.json npm run dev default,Backend API,Browser → :3000
+PORTS,3001,Backend API,HTTP,Backend service,Main REST API endpoints,Used,Exposed in docker-compose,None,Frontend → :3001
+PORTS,5432,PostgreSQL,TCP,Database internal,Internal PostgreSQL port,Internal,Not exposed outside Docker,Backend,Backend → :5432 (internal)
+PORTS,5543,PostgreSQL External,TCP,Database external,External access to PostgreSQL,Exposed,For local tools and Prisma Studio,Database,Tools → :5543
+PORTS,6379,Redis,TCP,Redis service,Redis internal and external port,Exposed,For backend dongle service and testing,Redis,Services → :6379
+PORTS,5555,Prisma Studio,HTTP,Database GUI,Web interface for database management,Exposed,Browser access only,PostgreSQL,Browser → :5555
+
+ENVIRONMENT_VARS,DATABASE_URL,Database Connection,PostgreSQL,Backend .env and Frontend .env.local,PostgreSQL connection string,Required,postgresql://user:pass@host:port/db,PostgreSQL,Backend + Frontend → Database
+ENVIRONMENT_VARS,REDIS_HOST,Redis Host,Redis,Backend + Dongle .env,Redis server hostname,Required,Default: redis (Docker) or localhost,Redis,Services → Redis
+ENVIRONMENT_VARS,REDIS_PORT,Redis Port,Redis,Backend + Dongle .env,Redis server port,Required,Default: 6379,Redis,Services → Redis
+ENVIRONMENT_VARS,REDIS_CHANNEL,Redis Channel,Redis,Dongle .env,Pub/sub channel name,Required,Default: dongle:data,Redis,Publish/Subscribe
+ENVIRONMENT_VARS,JWT_SECRET,JWT Signing,Authentication,Backend .env and Frontend .env.local,Secret key for access tokens,Required,32+ character random string,Auth Service,Token Generation
+ENVIRONMENT_VARS,JWT_REFRESH_SECRET,JWT Signing,Authentication,Backend .env and Frontend .env.local,Secret key for refresh tokens,Required,32+ character random string,Auth Service,Token Generation
+ENVIRONMENT_VARS,JWT_ACCESS_EXPIRY,JWT Expiry,Authentication,Frontend .env.local,Access token lifetime,Optional,Default: 15m,Auth Service,Token Config
+ENVIRONMENT_VARS,JWT_REFRESH_EXPIRY,JWT Expiry,Authentication,Frontend .env.local,Refresh token lifetime,Optional,Default: 7d,Auth Service,Token Config
+ENVIRONMENT_VARS,ENCRYPTION_KEY,AES Encryption,Security,Backend .env,32-character key for API key encryption,Required,Exactly 32 characters,Encryption Util,Encrypt/Decrypt
+ENVIRONMENT_VARS,SERIAL_PORT,USB Serial,Hardware,Dongle .env,ESP32 receiver serial port,Optional,Default: /dev/ttyUSB0,Serial Port,Dongle → ESP32
+ENVIRONMENT_VARS,FRONTEND_URL,CORS,Security,Backend .env,Allowed frontend origin,Required,Default: http://localhost:3000,CORS,Backend → Frontend
+ENVIRONMENT_VARS,NEXT_PUBLIC_API_URL,Backend API,Next.js Public,Frontend .env.local,Backend API base URL for client-side requests,Required,Default: http://localhost:3001 - NEXT_PUBLIC_ prefix makes it available in browser,Backend API,Frontend → Backend
+ENVIRONMENT_VARS,NEXT_PUBLIC_APP_URL,Application URL,Next.js Public,Frontend .env.local,Frontend application base URL for redirects,Required,Default: http://localhost:3000,None,Redirects and CORS
+ENVIRONMENT_VARS,NODE_ENV,Environment Mode,Node.js,Frontend .env.local,Current environment mode,Required,development | production | test,None,Build and Runtime
+ENVIRONMENT_VARS,COOKIE_SECURE,Cookie Security,Authentication,Frontend .env.local,Enable secure flag for cookies (HTTPS only),Required,false in dev true in production,Auth Cookies,Cookie Config
+ENVIRONMENT_VARS,COOKIE_DOMAIN,Cookie Domain,Authentication,Frontend .env.local,Domain for cookie scope,Required,localhost in dev yourdomain.com in prod,Auth Cookies,Cookie Config
+
+SUCCESS_CRITERIA,Database Migration,Setup,Validation,Prisma Studio,19 new fields visible in Device model,Verifiable,Open Prisma Studio check Device model,Migration,Migration → Verify
+SUCCESS_CRITERIA,Organization Assignment,Setup,Database Check,User table,All users have organizationId not null,Verifiable,Prisma Studio User model check organizationId,Fix Script,Script → Verify
+SUCCESS_CRITERIA,Docker Services Running,Infrastructure,Process Check,docker-compose ps,All 5 services show Up status,Verifiable,Run docker-compose ps,Docker,Start → Verify
+SUCCESS_CRITERIA,Backend API Health,Infrastructure,HTTP Check,GET /health,Returns success:true with timestamp,Verifiable,curl http://localhost:3001/health,Backend,Start → Verify
+SUCCESS_CRITERIA,JWT Token with Org,Authentication,Token Decode,JWT payload,Token includes organizationId field,Verifiable,Decode token at jwt.io,Login,Login → Verify
+SUCCESS_CRITERIA,Pairing Endpoint Works,API,HTTP Check,POST /api/devices/pair/start,Returns sessionId and status:waiting,Verifiable,curl with Bearer token,Backend + Auth,Auth → Verify
+SUCCESS_CRITERIA,Test Dongle Creates Device,Integration,Database Check,Device table,Device created with 19 populated fields,Verifiable,Prisma Studio + curl test-dongle,Full Stack,API → Verify
+SUCCESS_CRITERIA,Frontend Modal Opens,UI,Visual Check,GPS modal in setup page,Modal displays Waiting for GPS signal with loader animation,Verifiable,Click Use GPS button in Step 2 of device setup,Frontend Complete,User Click → Modal Display
+SUCCESS_CRITERIA,GPS Data Displays,UI,Visual Check,GPS data section in modal,Coordinates 33.888630 35.495480 visible with green theme,Verifiable,After triggering test dongle endpoint,Frontend + Backend,API → State Update → Render
+SUCCESS_CRITERIA,IMU Data Displays,UI,Visual Check,IMU section in modal,Accelerometer Gyroscope Temperature visible in purple-themed card,Verifiable,Appears with GPS data after pairing,Frontend Complete,Pairing Status → Render
+SUCCESS_CRITERIA,No Console Errors,Frontend,Browser Check,DevTools Console,No cyclic object value error when API fails,Verifiable,F12 Console tab - test with invalid token,getErrorMessage Fix,Error → Safe Log → No Crash
+SUCCESS_CRITERIA,Data Flow Complete,Integration,Multi-point Check,All systems,API → Redis → Backend → DB → Frontend,Verifiable,Monitor all 5 points simultaneously,Full Stack,E2E → Verify
+
+TESTING_SCENARIOS,Test 1 Login,E2E Test,Manual,Browser + API,User can login and get JWT with organizationId,Ready,Step-by-step in LOCAL_TESTING_INSTRUCTIONS.md,Auth System,Login → Verify Token
+TESTING_SCENARIOS,Test 2 GPS Modal Open,E2E Test,Manual,Browser,Use GPS button opens modal without errors,Ready,Click button check console for no cyclic errors,Frontend + Backend,Button → Modal
+TESTING_SCENARIOS,Test 3 Dongle Trigger,E2E Test,Manual,Terminal + Browser,Test dongle endpoint updates modal with data,Ready,curl command then check modal updates,Full Stack,API → Display
+TESTING_SCENARIOS,Test 4 Database Verify,E2E Test,Manual,Prisma Studio,All 19 fields populated in latest device,Ready,Open Prisma Studio check Device,Database,Create → Verify
+TESTING_SCENARIOS,Test 5 Data Flow Monitor,E2E Test,Manual,3 Terminals,Watch Redis Backend Database simultaneously,Ready,SUBSCRIBE + logs + Prisma refresh,Integration,Monitor Flow
+TESTING_SCENARIOS,Test 6 Error Handling,E2E Test,Manual,Browser,403 error handled gracefully no cyclic error,Ready,Remove organizationId test error display,Error Handling,Error → Graceful
+TESTING_SCENARIOS,Test 7 Repeated Pairing,E2E Test,Manual,Browser + Terminal,Multiple pairing sessions work correctly,Ready,Run 3 times check each,Stability,Repeat → Verify
+TESTING_SCENARIOS,Playwright Test 1,Automated,Playwright MCP,AI Client,Login flow automation,Ready,TEST-PROMPTS.md Test 1,Playwright MCP,AI → Browser
+TESTING_SCENARIOS,Playwright Test 4,Automated,Playwright MCP,AI Client,Complete GPS pairing flow automation,Ready,TEST-PROMPTS.md Test 4,Playwright MCP,AI → E2E
+TESTING_SCENARIOS,Playwright Test 6,Automated,Playwright MCP,AI Client,Complete end-to-end automation,Ready,TEST-PROMPTS.md Test 6,Playwright MCP,AI → Full Test
+
+DEPENDENCIES,Backend Node Modules,Dependencies,npm,airguard-backend/package.json,Express Prisma Socket.io Redis etc.,Listed,npm install to install,None,package.json → node_modules
+DEPENDENCIES,Frontend Node Modules,Dependencies,npm,airguard-frontend/package.json,Next.js 15.3.3 React 19 Tailwind Framer Motion Leaflet Recharts Lucide,Listed,npm install - 41 total dependencies,None,package.json → node_modules
+DEPENDENCIES,Dongle Python Packages,Dependencies,pip,dongle-service/requirements.txt,pyserial redis python-dotenv,Listed,pip install -r requirements.txt,None,requirements.txt → site-packages
+DEPENDENCIES,Docker Base Images,Dependencies,Docker,Dockerfiles,postgres:15-alpine redis:7-alpine node:24-alpine python:3.11-slim,Pulled,docker-compose pull,None,Docker Hub → Local
+DEPENDENCIES,Playwright Browsers,Dependencies,Playwright,playwright install,Chromium Firefox WebKit,Optional,For Playwright MCP testing,Playwright,npx playwright install
+
+FUTURE_ENHANCEMENTS,Port Scanner Microservice,New Feature,Python/Nmap,Future microservice,Standalone service for network port scanning,Planned,Same pattern as dongle service,Redis,Port Scan → Redis → Backend
+FUTURE_ENHANCEMENTS,Real ESP32 Hardware Testing,Hardware Test,Physical Devices,With actual dongle,Test with real ESP32 sender and receiver,Pending Hardware,Need physical devices,Dongle Service,Real Device → Serial
+FUTURE_ENHANCEMENTS,CI/CD Pipeline,Automation,GitHub Actions,Automated testing,Run tests on every commit,Planned,Standard Playwright tests in workflow,Git,Commit → Test → Deploy
+FUTURE_ENHANCEMENTS,Production Deployment,Infrastructure,Cloud Hosting,AWS/GCP/Azure etc.,Deploy to production environment,Planned,Docker Compose or Kubernetes,All Services,Deploy → Production
+FUTURE_ENHANCEMENTS,Monitoring and Logging,Operations,Log Aggregation,ELK Stack or similar,Centralized logging and monitoring,Planned,Production requirement,All Services,Services → Logs → Dashboard

@@ -1,0 +1,2102 @@
+[
+  {
+    "timestamp": "2025-11-08T07:12:10.705897",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:12:30.722445",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:12:33.873750",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:12:50.759848",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:22:28.951209",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:22:48.985493",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:23:09.594527",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:23:29.632109",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:23:49.652988",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:33:11.774990",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:33:31.791126",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:33:51.821978",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:34:07.249190",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:34:11.855030",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:34:31.889147",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:34:51.927171",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:35:11.961220",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:35:31.995011",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:35:52.015866",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:36:12.049290",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:36:32.082342",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:36:52.116374",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:37:12.155774",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:37:32.191046",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:37:52.223955",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:38:12.244179",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:38:32.258904",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:38:52.291350",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:39:12.326959",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:39:32.358690",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:39:52.373303",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:40:12.406808",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:40:32.448447",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:40:52.465455",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:41:12.497160",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:41:32.510694",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:41:52.535790",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:42:12.552114",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:42:32.564560",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:42:52.577707",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:43:12.591724",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:43:32.611394",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:43:52.625972",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:44:12.646577",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:44:32.683357",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:44:52.701814",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:45:12.731187",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:45:32.747329",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:45:52.763871",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:46:12.816792",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:46:32.860014",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:46:52.899318",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:47:02.100693",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:47:22.141838",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:47:42.180680",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:48:02.215019",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:48:22.232462",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:55:56.190899",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T07:56:16.208211",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T08:08:11.314614",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T08:08:31.333623",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T08:08:51.367630",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T09:05:06.153732",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-08T09:05:26.192951",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -90
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-18T05:02:02.380273",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -99
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-18T05:24:17.735481",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -99
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-18T05:24:37.778453",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -99
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-18T05:24:57.819107",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-18T05:25:17.856076",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-18T05:25:37.890344",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T03:54:13.770873",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T03:54:33.818963",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:00:57.512486",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -99
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:01:17.561293",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:01:37.578108",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:01:57.603486",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:09:24.986065",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -99
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:09:45.020351",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:10:05.058524",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:10:25.083204",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:10:45.103311",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:11:05.139471",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:11:25.159916",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:11:45.202707",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:12:05.222785",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:20:12.968704",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:20:32.992655",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:31:41.172740",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -99
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:32:01.190451",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:32:21.211305",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:32:41.230979",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:47:19.036905",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:50:51.180961",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:51:11.197526",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:51:31.235560",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:53:24.888108",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -99
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:53:44.922860",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:54:04.950468",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -99
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:58:26.545124",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -99
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-11-21T06:58:46.562281",
+    "scan": [
+      {
+        "freq": "2.4GHz",
+        "value": 60
+      },
+      {
+        "freq": "5GHz",
+        "value": 75
+      },
+      {
+        "freq": "Noise",
+        "value": -98
+      },
+      {
+        "freq": "Utilization",
+        "value": 0
+      }
+    ]
+  }
+]

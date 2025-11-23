@@ -1,0 +1,318 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "../styles/sidebar.css";
+@import "../styles/map.css";
+
+@layer base {
+  html {
+    @apply bg-ag-black text-ag-white;
+  }
+
+  /* Custom animations for loading screens */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes progress {
+    0% {
+      width: 0%;
+    }
+    100% {
+      width: 100%;
+    }
+  }
+
+  /* Enhanced Achievement Card Animations */
+  @keyframes cardEnter {
+    from {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes cardHover {
+    0% {
+      transform: scale(1) rotateY(0deg);
+    }
+    50% {
+      transform: scale(1.02) rotateY(2deg);
+    }
+    100% {
+      transform: scale(1.03) rotateY(0deg);
+    }
+  }
+
+  @keyframes shimmerFlow {
+    0% {
+      transform: translateX(-200%) skewX(-12deg);
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(200%) skewX(-12deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes iconBounce {
+    0% {
+      transform: scale(1) rotate(0deg);
+    }
+    50% {
+      transform: scale(1.1) rotate(5deg);
+    }
+    100% {
+      transform: scale(1.05) rotate(0deg);
+    }
+  }
+
+  @keyframes progressFill {
+    0% {
+      width: 0%;
+      opacity: 0.7;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes glowPulse {
+    0%,
+    100% {
+      box-shadow: 0 0 20px rgba(186, 226, 37, 0.2);
+    }
+    50% {
+      box-shadow: 0 0 30px rgba(186, 226, 37, 0.4);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.5s ease-out;
+  }
+
+  .animate-progress {
+    animation: progress 2s ease-in-out infinite;
+  }
+
+  /* Achievement Card Animation Utilities */
+  .animate-card-enter {
+    animation: cardEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  .animate-card-hover {
+    animation: cardHover 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  .animate-shimmer-flow {
+    animation: shimmerFlow 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  .animate-icon-bounce {
+    animation: iconBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  .animate-progress-fill {
+    animation: progressFill 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  .animate-glow-pulse {
+    animation: glowPulse 2s ease-in-out infinite;
+  }
+
+  /* Spring-based transitions */
+  .spring-transition {
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .spring-transition-fast {
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .spring-transition-slow {
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* Custom scrollbar styles */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: rgba(25, 25, 25, 0.2);
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(186, 226, 37, 0.3);
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: rgba(186, 226, 37, 0.5);
+  }
+
+  /* Custom scrollbar styles for carousel */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgba(186, 226, 37, 0.3);
+    border-radius: 2px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(186, 226, 37, 0.5);
+  }
+
+  .scrollbar-thumb-ag-green\/30::-webkit-scrollbar-thumb {
+    background-color: rgba(186, 226, 37, 0.3);
+  }
+
+  .scrollbar-track-transparent::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer components {
+  /* Custom Buttons */
+  .ag-button {
+    @apply w-full bg-ag-green text-ag-black text-xl font-semibold cursor-pointer py-4 rounded-lg hover:brightness-115 transition duration-200 active:brightness-90 focus:brightness-115;
+  }
+
+  .ag-button:disabled {
+    @apply cursor-not-allowed opacity-70 hover:brightness-100;
+  }
+
+  .ag-text-button {
+    @apply text-ag-green text-sm lg:text-base p-2 rounded-md font-medium cursor-pointer hover:bg-ag-green/30 transition duration-200;
+  }
+
+  .ag-nav-button {
+    @apply text-lg font-medium p-4 rounded-md cursor-pointer hover:bg-ag-black/30 transition duration-200;
+  }
+
+  .ag-back-button {
+    @apply w-full bg-ag-white/10 text-ag-white text-lg font-semibold cursor-pointer py-4 rounded-lg hover:bg-ag-white/20 transition duration-200 active:bg-ag-white/5 focus:bg-ag-white/20;
+  }
+
+  .ag-back-button:disabled {
+    @apply cursor-not-allowed opacity-50 hover:bg-ag-white/10;
+  }
+
+  /* Custom inputs, dropdowns and checkboxes */
+  .ag-input,
+  .ag-input select {
+    @apply w-full px-4 py-3 rounded-lg border-1 border-ag-green bg-ag-green/5 text-ag-white placeholder:text-ag-white/60 focus:outline-none focus:ring-1 focus:ring-ag-green focus:bg-ag-green/20 transition duration-200;
+  }
+
+  .ag-input:disabled {
+    @apply cursor-not-allowed opacity-50 bg-ag-white/5 border-ag-white/20 text-ag-white/50;
+  }
+
+  .ag-dropdown {
+    @apply w-full px-4 py-3 rounded-lg border-1 border-ag-green bg-ag-green/5 text-ag-white font-sans focus:outline-none focus:ring-1 focus:ring-ag-green focus:bg-ag-green/30 transition duration-200 appearance-none cursor-pointer;
+    font-family: var(--font-inter, var(--font-sans, sans-serif));
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23bae225' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+  }
+
+  .ag-dropdown option {
+    @apply bg-ag-black text-ag-white;
+  }
+
+  .ag-dropdown:disabled {
+    @apply cursor-not-allowed opacity-50 bg-ag-white/5 border-ag-white/20 text-ag-white/50;
+  }
+
+  .ag-checkbox {
+    @apply w-4 h-4 rounded border-2 border-ag-green bg-transparent focus:ring-ag-green focus:ring-2 focus:ring-offset-0 transition duration-200;
+    accent-color: #bae225;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  .ag-checkbox:checked {
+    @apply bg-ag-green border-ag-green;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23191919'%3e%3cpath d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 12px;
+  }
+
+  .ag-checkbox:disabled {
+    @apply cursor-not-allowed opacity-50 border-ag-white/20;
+  }
+
+  /* Misc. and errors */
+
+  .ag-input-container {
+    @apply w-full flex flex-col justify-center items-start mb-4 relative;
+  }
+
+  .ag-input-container.has-error {
+    @apply mb-6;
+  }
+
+  .ag-error-message {
+    @apply absolute left-0 text-ag-red text-xs leading-tight transition-all duration-200;
+    top: calc(100% + 2px);
+    max-width: 100%;
+  }
+
+  .ag-input-error {
+    @apply border-ag-red focus:ring-ag-red focus:border-ag-red;
+    box-shadow: 0 0 0 1px #ff5643;
+  }
+
+  .ag-dropdown-error {
+    @apply border-ag-red focus:ring-ag-red focus:border-ag-red;
+    box-shadow: 0 0 0 1px #ff5643;
+  }
+
+  /* Loading transition utilities */
+  .loading-transition {
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  }
+
+  .prevent-flash {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .prevent-flash.mounted {
+    visibility: visible;
+    opacity: 1;
+  }
+}

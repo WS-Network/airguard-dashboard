@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "playwright-airguard": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest",
+        "--browser",
+        "chromium",
+        "--viewport-size",
+        "1920x1080",
+        "--timeout-action",
+        "10000"
+      ]
+    }
+  }
+}

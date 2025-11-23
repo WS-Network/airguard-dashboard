@@ -1,0 +1,33 @@
+Agent,Priority,Task,Description,Location,Details,API_Endpoint,Notes
+BACKEND,HIGH,Remove Dummy Data,Remove all dummy/seed data from database and API responses,src/services/*.ts,"Delete any hardcoded mock data, use only real database data",ALL,Ensure devices table shows only real data
+BACKEND,HIGH,Add Port Scan Endpoint,Create endpoint to trigger Netwatch port scan for 30 seconds,src/controllers/deviceController.ts,"POST /api/devices/scan - calls Netwatch http://localhost:8080/api/scan, returns discovered devices",POST /api/devices/scan,Timeout: 30 seconds
+BACKEND,HIGH,Get Dongle Data Endpoint,Create endpoint to inject/store dongle data into database,src/controllers/pairingController.ts,"POST /api/devices/dongle-inject - receives dongle JSON data, creates Device record",POST /api/devices/dongle-inject,Use existing DongleData type from dongleGateway.ts
+BACKEND,MEDIUM,Update Device Service,Modify getDevices to return real devices from database only,src/services/deviceService.ts,"Remove any mock data, query Prisma for organization devices","GET /api/devices",Filter by organizationId from JWT
+BACKEND,MEDIUM,Netwatch Integration Service,Create service to fetch from Netwatch my-feature-branch API,src/services/netwatchService.ts,"Fetch from http://localhost:8080/api/scan, parse response, return typed data",Internal service,Netwatch running on port 8080
+
+FRONTEND,HIGH,Remove Dummy Data,Remove all mock/demo data from dashboard components,src/components/dashboard/*.tsx,"Delete hardcoded device arrays, fetch from backend API only",N/A,Ensure tables show only real data
+FRONTEND,HIGH,Add Scan Button - Home,Add 'Start Port Scan' button on dashboard home page,src/app/dashboard/home/page.tsx,"Button triggers POST /api/devices/scan, shows loading for 30s, displays results in devices table",POST /api/devices/scan,Show scan progress indicator
+FRONTEND,HIGH,Add Scan Button - Setup,Add 'Start Port Scan' button on device setup page,src/app/dashboard/setup/page.tsx,"Same as home page, button in Managed Devices section",POST /api/devices/scan,Update device list after scan
+FRONTEND,HIGH,Add Dongle Button,Add 'Get Dongle Data' button to inject dongle data,src/app/dashboard/setup/page.tsx,"Button calls POST /api/devices/dongle-inject with sample dongle data, updates device list",POST /api/devices/dongle-inject,Place near GPS pairing section
+FRONTEND,MEDIUM,Update Devices Table - Home,Modify home page devices table to show Netwatch data,src/components/dashboard/DevicesTable.tsx,"Columns: IP, MAC, Vendor, Hostname, Ports, OS, Status",GET /api/devices/discovered,Include ESP32 devices indicator
+FRONTEND,MEDIUM,Update Devices Table - Setup,Modify setup page managed devices to show Netwatch data,src/app/dashboard/setup/page.tsx,"Same columns as home page table, add 'Pair' action for ESP32 devices",GET /api/devices/discovered,Filter ESP32 devices for pairing
+
+SHARED,HIGH,Netwatch Integration,Netwatch is now on my-feature-branch,netwatch.new/,Branch: my-feature-branch running on port 8080,http://localhost:8080/api/scan,Returns: wifi_devices and network_devices arrays
+SHARED,HIGH,MQTT Bridge Working,MQTT-to-Redis bridge is operational,Backend already running,"Topic: espnow/samples, Redis channel: dongle:data",mqtt://localhost:1883,Test with python3 test_mqtt_publish.py
+
+DATA_STRUCTURES,N/A,Netwatch Response,"{ wifi_devices: [], network_devices: [{ ip, mac, vendor, hostname, ports, os, os_accuracy, ssh_status }], snmp_data: {} }",Backend parses this,See GET /api/devices/discovered response for full structure,N/A,13 devices currently discovered
+DATA_STRUCTURES,N/A,Dongle Data,"{ batchId, lat, lon, alt, ax, ay, az, gx, gy, gz, tempC, gpsFix, sats, dateYMD, timeHMS, msec, sessionMs, samples }",19 fields total,Store in Device table dongle* fields,N/A,GPS + IMU + Metadata
+
+GIT_INFO,N/A,Backend Branch,claude/testing-mi0b9h5vic67o86f-01KDpTwVgzXRbJTMu7D6TbPr,airguard-backend/,Latest commit: 9be5e36 - MQTT integration,N/A,Pull before starting
+GIT_INFO,N/A,Frontend Branch,claude/testing-01KFW6adLgAKjUb9c2rnFPud,airguard-frontend/,Latest commit: 83723e4 - Error handling fix,N/A,Pull before starting
+GIT_INFO,N/A,Netwatch Branch,my-feature-branch,netwatch.new/,Switched from main branch,N/A,Port 8080
+
+TESTING,N/A,Test MQTT Flow,"Run: cd airguard-esp32-iot-postgresql && python3 test_mqtt_publish.py",Root directory,Publishes sample dongle data to MQTT,mqtt://localhost:1883,Watch backend logs for reception
+TESTING,N/A,Test Netwatch API,"curl http://localhost:8080/api/scan",Any terminal,Returns JSON with network devices,http://localhost:8080/api/scan,13 devices expected
+TESTING,N/A,Test Discovered Devices,"curl -H 'Authorization: Bearer TOKEN' http://localhost:3001/api/devices/discovered",Any terminal,Returns Netwatch data via backend,GET /api/devices/discovered,Need valid JWT token
+
+SYSTEM_STATUS,N/A,Backend,Running on port 3001,PID 1090680,MQTT connected to localhost:1883,http://localhost:3001/health,Healthy
+SYSTEM_STATUS,N/A,Frontend,Running on port 3005,N/A,Port 3000 occupied by Firefox,http://localhost:3005,Ready
+SYSTEM_STATUS,N/A,Netwatch,Running on port 8080,N/A,my-feature-branch checked out,http://localhost:8080/api/scan,13 devices
+SYSTEM_STATUS,N/A,Redis,Running on port 6379,Docker,Channel: dongle:data,redis://localhost:6379,Connected
+SYSTEM_STATUS,N/A,MQTT Broker,Running on port 1883,Docker Mosquitto,Topic: espnow/samples,mqtt://localhost:1883,Connected

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netwatch - Network Monitoring Dashboard</title>
+    <link rel="stylesheet" href="static/css/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="login-container">
+                <div class="login-header">
+                    <div class="logo">
+                        <svg width="50" height="50" viewBox="0 0 50 50">
+                            <circle cx="25" cy="25" r="20" fill="none" stroke="#3b82f6" stroke-width="3"/>
+                            <circle cx="25" cy="25" r="3" fill="#3b82f6"/>
+                            <line x1="25" y1="25" x2="40" y2="15" stroke="#3b82f6" stroke-width="2"/>
+                            <circle cx="40" cy="15" r="3" fill="#3b82f6"/>
+                            <line x1="25" y1="25" x2="40" y2="35" stroke="#3b82f6" stroke-width="2"/>
+                            <circle cx="40" cy="35" r="3" fill="#3b82f6"/>
+                            <line x1="25" y1="25" x2="10" y2="25" stroke="#3b82f6" stroke-width="2"/>
+                            <circle cx="10" cy="25" r="3" fill="#3b82f6"/>
+                        </svg>
+                    </div>
+                    <h2>Netwatch</h2>
+                    <p>Network Monitoring System</p>
+                </div>
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="input-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" placeholder="admin" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <span id="loginBtnText">Sign In</span>
+                        <span id="loginLoader" class="spinner" style="display: none;"></span>
+                    </button>
+                    <p class="hint">Default: admin / admin</p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" style="display: none;">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo-small">
+                        <svg width="30" height="30" viewBox="0 0 50 50">
+                            <circle cx="25" cy="25" r="20" fill="none" stroke="#3b82f6" stroke-width="3"/>
+                            <circle cx="25" cy="25" r="3" fill="#3b82f6"/>
+                        </svg>
+                    </div>
+                    <h1>Netwatch Dashboard</h1>
+                </div>
+                <div class="header-right">
+                    <div class="status-indicator">
+                        <span class="status-dot status-active"></span>
+                        <span>Live Monitoring</span>
+                    </div>
+                    <div class="user-menu">
+                        <span id="currentUser">admin</span>
+                        <button onclick="handleLogout()" class="btn-logout">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Stats Overview -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon wifi"></div>
+                    <div class="stat-content">
+                        <h3>WiFi Devices</h3>
+                        <p class="stat-number" id="wifiDeviceCount">
+                            <span class="loading-skeleton">0</span>
+                        </p>
+                        <span class="stat-label">Active Networks</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon network"></div>
+                    <div class="stat-content">
+                        <h3>Network Devices</h3>
+                        <p class="stat-number" id="networkDeviceCount">
+                            <span class="loading-skeleton">0</span>
+                        </p>
+                        <span class="stat-label">Discovered</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon warning"></div>
+                    <div class="stat-content">
+                        <h3>Bad Frequencies</h3>
+                        <p class="stat-number" id="badFreqCount">
+                            <span class="loading-skeleton">0</span>
+                        </p>
+                        <span class="stat-label">Detected</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon ssh"></div>
+                    <div class="stat-content">
+                        <h3>SSH Connections</h3>
+                        <p class="stat-number" id="sshCount">
+                            <span class="loading-skeleton">0</span>
+                        </p>
+                        <span class="stat-label">Connected</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="charts-section">
+                <div class="chart-container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Network Traffic Overview</h3>
+                            <div class="chart-controls">
+                                <button class="btn-small" onclick="refreshCharts()">Refresh</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="networkChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Device Distribution</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="deviceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Devices Table -->
+            <section class="devices-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Network Devices</h3>
+                        <div class="table-controls">
+                            <input type="text" id="searchDevices" placeholder="Search devices..." class="search-input">
+                            <button class="btn-small" onclick="refreshDevices()">Refresh</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="devicesTableLoading" class="table-loading">
+                            <div class="spinner"></div>
+                            <p>Loading devices...</p>
+                        </div>
+                        <div id="devicesTable" style="display: none;">
+                            <table class="devices-table">
+                                <thead>
+                                    <tr>
+                                        <th>Status</th>
+                                        <th>IP Address</th>
+                                        <th>Hostname</th>
+                                        <th>MAC Address</th>
+                                        <th>Vendor</th>
+                                        <th>Ports</th>
+                                        <th>SSH Status</th>
+                                        <th>RSSI</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="devicesTableBody">
+                                    <!-- Devices will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="noDevices" style="display: none;" class="empty-state">
+                            <p>No devices found</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bad Frequencies Section -->
+            <section class="frequencies-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Bad Frequencies Detected</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="badFreqLoading" class="table-loading">
+                            <div class="spinner"></div>
+                            <p>Scanning frequencies...</p>
+                        </div>
+                        <div id="badFreqList" style="display: none;">
+                            <div id="badFreqContent"></div>
+                        </div>
+                        <div id="noBadFreq" style="display: none;" class="empty-state">
+                            <p>✓ No bad frequencies detected</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <div class="footer-content">
+                <p>Last Update: <span id="lastUpdate">Never</span></p>
+                <p>API: <span id="apiStatus" class="status-active">Connected</span></p>
+                <p>Auto-refresh: <span id="autoRefresh">Every 5s</span></p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="static/js/dashboard.js"></script>
+</body>
+</html>

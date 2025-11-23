@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NETWATCH // NETWORK MONITOR</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-cyan: #00f7ff;
+            --neon-green: #39ff14;
+            --neon-red: #ff0040;
+            --neon-orange: #ff6600;
+            --neon-purple: #bd00ff;
+            --neon-yellow: #ffff00;
+            --dark-bg: #0a0a0a;
+            --darker-bg: #000000;
+            --panel-bg: rgba(0, 20, 20, 0.9);
+            --border-color: rgba(0, 247, 255, 0.3);
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 2px 2px var(--neon-cyan), -2px -2px var(--neon-red); }
+            25% { text-shadow: -2px -2px var(--neon-cyan), 2px 2px var(--neon-red); }
+            50% { text-shadow: 2px -2px var(--neon-cyan), -2px 2px var(--neon-red); }
+            75% { text-shadow: -2px 2px var(--neon-cyan), 2px -2px var(--neon-red); }
+            100% { text-shadow: 2px 2px var(--neon-cyan), -2px -2px var(--neon-red); }
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.96; }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan), 0 0 15px var(--neon-cyan); }
+            50% { box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan), 0 0 30px var(--neon-cyan); }
+        }
+
+        @keyframes pulse-border {
+            0%, 100% { border-color: rgba(0, 247, 255, 0.3); }
+            50% { border-color: rgba(0, 247, 255, 0.8); }
+        }
+
+        @keyframes slideDown {
+            from {
+                max-height: 0;
+                opacity: 0;
+            }
+            to {
+                max-height: 1000px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                max-height: 1000px;
+                opacity: 1;
+            }
+            to {
+                max-height: 0;
+                opacity: 0;
+            }
+        }
+
+        body {
+            font-family: 'Share Tech Mono', 'Courier New', monospace;
+            background: var(--darker-bg);
+            color: var(--neon-cyan);
+            overflow-x: hidden;
+            position: relative;
+            animation: flicker 0.15s infinite;
+        }
+
+        /* CRT Effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Scanline Effect */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(transparent, var(--neon-cyan), transparent);
+            opacity: 0.1;
+            animation: scanline 6s linear infinite;
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(0, 247, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(57, 255, 20, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: var(--panel-bg);
+            border: 2px solid var(--neon-cyan);
+            border-left: 5px solid var(--neon-cyan);
+            padding: 25px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .header::before {
+            content: '////////////////////////////////////////////////////////////////////////////////////////////////////';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            font-size: 8px;
+            color: var(--neon-cyan);
+            opacity: 0.2;
+            letter-spacing: -1px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--neon-cyan);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            animation: glitch 3s infinite;
+        }
+
+        .title-sub {
+            font-size: 11px;
+            color: var(--neon-green);
+            margin-top: 8px;
+            opacity: 0.7;
+            letter-spacing: 2px;
+        }
+
+        .status-bar {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .status-item {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            padding: 10px 18px;
+            font-size: 11px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: pulse-border 2s infinite;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--neon-green);
+            animation: glow 1s ease-in-out infinite;
+        }
+
+        .status-dot.error {
+            background: var(--neon-red);
+        }
+
+        .connection-badge {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid var(--neon-cyan);
+            padding: 12px 24px;
+            font-size: 13px;
+            text-transform: uppercase;
+            color: var(--neon-cyan);
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        .connection-badge.ethernet {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+        }
+
+        .connection-badge.wireless {
+            border-color: var(--neon-purple);
+            color: var(--neon-purple);
+            box-shadow: 0 0 10px rgba(189, 0, 255, 0.3);
+        }
+
+        .connection-badge.disconnected {
+            border-color: var(--neon-red);
+            color: var(--neon-red);
+            box-shadow: 0 0 10px rgba(255, 0, 64, 0.3);
+        }
+
+        /* Stats Grid */
+        .stats-container {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-left: 3px solid var(--neon-cyan);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-box {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-box:hover {
+            border-color: var(--neon-cyan);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0, 247, 255, 0.3);
+        }
+
+        .stat-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .stat-box:hover::before {
+            left: 100%;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: rgba(0, 247, 255, 0.7);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            color: var(--neon-green);
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+        }
+
+        /* Trigger Buttons */
+        .trigger-section {
+            margin-bottom: 15px;
+        }
+
+        .trigger-btn {
+            width: 100%;
+            background: var(--panel-bg);
+            border: 2px solid var(--border-color);
+            border-left: 4px solid var(--neon-cyan);
+            padding: 18px 25px;
+            color: var(--neon-cyan);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trigger-btn:hover {
+            border-color: var(--neon-cyan);
+            background: rgba(0, 247, 255, 0.05);
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.2);
+        }
+
+        .trigger-btn.active {
+            border-left-color: var(--neon-green);
+            background: rgba(0, 247, 255, 0.1);
+        }
+
+        .trigger-btn::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, transparent, rgba(0, 247, 255, 0.1), transparent);
+            transition: width 0.5s ease;
+        }
+
+        .trigger-btn:hover::before {
+            width: 100%;
+        }
+
+        .trigger-label {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .trigger-icon {
+            font-size: 20px;
+        }
+
+        .trigger-count {
+            background: var(--neon-cyan);
+            color: var(--darker-bg);
+            padding: 4px 14px;
+            border-radius: 3px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .trigger-arrow {
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .trigger-btn.active .trigger-arrow {
+            transform: rotate(180deg);
+        }
+
+        /* Expandable Content */
+        .trigger-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, opacity 0.3s ease;
+            opacity: 0;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-top: none;
+        }
+
+        .trigger-content.active {
+            max-height: 2000px;
+            opacity: 1;
+            padding: 25px;
+            animation: slideDown 0.5s ease;
+        }
+
+        .panel-body {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        /* Custom Scrollbar */
+        .panel-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .panel-body::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .panel-body::-webkit-scrollbar-thumb {
+            background: var(--neon-cyan);
+            border-radius: 3px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 320px;
+            margin-top: 15px;
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        .chart-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+        }
+
+        .chart-title {
+            font-size: 13px;
+            color: var(--neon-cyan);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .device-item {
+            background: rgba(0, 0, 0, 0.4);
+            border-left: 3px solid var(--neon-green);
+            padding: 15px;
+            margin-bottom: 12px;
+            font-size: 11px;
+            transition: all 0.3s ease;
+        }
+
+        .device-item:hover {
+            background: rgba(0, 247, 255, 0.1);
+            border-left-width: 5px;
+            transform: translateX(5px);
+            box-shadow: 0 0 15px rgba(0, 247, 255, 0.2);
+        }
+
+        .device-item.bad {
+            border-left-color: var(--neon-red);
+        }
+
+        .device-item.warning {
+            border-left-color: var(--neon-orange);
+        }
+
+        .device-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .device-mac {
+            font-weight: bold;
+            color: var(--neon-cyan);
+            font-size: 13px;
+            text-shadow: 0 0 5px rgba(0, 247, 255, 0.5);
+        }
+
+        .device-details {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 10px;
+            line-height: 1.8;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            font-size: 9px;
+            font-weight: bold;
+            border-radius: 2px;
+            text-transform: uppercase;
+        }
+
+        .badge-ok {
+            background: rgba(57, 255, 20, 0.2);
+            color: var(--neon-green);
+            border: 1px solid var(--neon-green);
+        }
+
+        .badge-bad {
+            background: rgba(255, 0, 64, 0.2);
+            color: var(--neon-red);
+            border: 1px solid var(--neon-red);
+        }
+
+        .badge-warning {
+            background: rgba(255, 102, 0, 0.2);
+            color: var(--neon-orange);
+            border: 1px solid var(--neon-orange);
+        }
+
+        .badge-info {
+            background: rgba(0, 247, 255, 0.2);
+            color: var(--neon-cyan);
+            border: 1px solid var(--neon-cyan);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px;
+            color: rgba(0, 247, 255, 0.3);
+            font-size: 12px;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.3;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: var(--neon-cyan);
+            font-size: 13px;
+            animation: glitch 2s infinite;
+        }
+
+        /* Network Device Styles */
+        .network-device {
+            border-left-color: var(--neon-cyan) !important;
+        }
+
+        .network-device.ssh-connected {
+            border-left-color: var(--neon-green) !important;
+        }
+
+        .network-device.ssh-failed {
+            border-left-color: var(--neon-red) !important;
+        }
+
+        .snmp-data {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(0, 247, 255, 0.05);
+            border: 1px solid rgba(0, 247, 255, 0.2);
+            font-size: 9px;
+        }
+
+        .footer {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-top: 2px solid var(--neon-cyan);
+            padding: 20px;
+            text-align: center;
+            font-size: 10px;
+            color: rgba(0, 247, 255, 0.5);
+            margin-top: 30px;
+        }
+
+        .ascii-border {
+            color: var(--neon-cyan);
+            opacity: 0.3;
+            font-size: 8px;
+            letter-spacing: 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-bg"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div>
+                    <div class="title">// NETWATCH</div>
+                    <div class="title-sub">&gt; NETWORK MONITORING SYSTEM v2.0</div>
+                </div>
+                <div class="status-bar">
+                    <div class="connection-badge" id="connectionStatus">
+                        <span id="connectionIcon">●</span> <span id="connectionText">CHECKING...</span>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-dot" id="statusDot"></div>
+                        <span id="lastUpdate">SYNCING...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Network Configuration Panel -->
+        <div class="stats-container" style="margin-bottom: 20px;">
+            <div class="panel-title" style="font-size: 14px; color: var(--neon-cyan); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 2px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color);">
+                // NETWORK CONFIGURATION
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                <div class="stat-item" style="background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border-color); padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <span class="stat-label">IP Address</span>
+                    <span class="stat-value" style="font-size: 14px; color: var(--neon-cyan);" id="netIP">-</span>
+                </div>
+                <div class="stat-item" style="background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border-color); padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <span class="stat-label">Subnet Mask</span>
+                    <span class="stat-value" style="font-size: 14px; color: var(--neon-cyan);" id="netSubnet">-</span>
+                </div>
+                <div class="stat-item" style="background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border-color); padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <span class="stat-label">Gateway</span>
+                    <span class="stat-value" style="font-size: 14px; color: var(--neon-cyan);" id="netGateway">-</span>
+                </div>
+                <div class="stat-item" style="background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border-color); padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <span class="stat-label">DNS Servers</span>
+                    <span class="stat-value" style="font-size: 14px; color: var(--neon-cyan);" id="netDNS">-</span>
+                </div>
+                <div class="stat-item" style="background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border-color); padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <span class="stat-label">IP Assignment</span>
+                    <span class="stat-value" style="font-size: 14px; color: var(--neon-green);" id="netDHCP">-</span>
+                </div>
+                <div class="stat-item" style="background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border-color); padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <span class="stat-label">MAC Address</span>
+                    <span class="stat-value" style="font-size: 14px; color: var(--neon-cyan);" id="netMAC">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monitor Mode Control Panel -->
+        <div class="stats-container" style="margin-bottom: 20px;">
+            <div class="panel-title" style="font-size: 14px; color: var(--neon-cyan); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 2px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color);">
+                // WIFI MONITOR MODE CONTROL
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px;">
+                <div style="flex: 1;">
+                    <div style="font-size: 18px; margin-bottom: 10px;">
+                        <span style="font-weight: bold;">Status:</span>
+                        <span id="monitorStatus" style="font-size: 20px; font-weight: bold; color: var(--neon-red);">DISABLED</span>
+                    </div>
+                    <div style="font-size: 12px; color: rgba(0, 247, 255, 0.7); margin-bottom: 5px;">
+                        Monitor mode enables WiFi packet capture and interference detection.
+                    </div>
+                    <div style="font-size: 11px; color: rgba(0, 247, 255, 0.5);" id="monitorInterface">
+                        Interface: Checking...
+                    </div>
+                </div>
+                <div style="display: flex; gap: 15px;">
+                    <button id="btnEnableMonitor" onclick="enableMonitorMode()"
+                            style="background: rgba(57, 255, 20, 0.2); border: 2px solid var(--neon-green); color: var(--neon-green); padding: 15px 30px; font-size: 14px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-family: 'Share Tech Mono', monospace; transition: all 0.3s;">
+                        ▶ ENABLE
+                    </button>
+                    <button id="btnDisableMonitor" onclick="disableMonitorMode()"
+                            style="background: rgba(255, 0, 64, 0.2); border: 2px solid var(--neon-red); color: var(--neon-red); padding: 15px 30px; font-size: 14px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-family: 'Share Tech Mono', monospace; transition: all 0.3s; display: none;">
+                        ■ DISABLE
+                    </button>
+                </div>
+            </div>
+            <div id="monitorMessage" style="margin-top: 15px; padding: 10px; background: rgba(0, 247, 255, 0.1); border-left: 3px solid var(--neon-cyan); font-size: 12px; display: none;">
+            </div>
+        </div>
+
+        <!-- Statistics Overview -->
+        <div class="stats-container">
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-label">WiFi Devices</div>
+                    <div class="stat-value" id="statWifi">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Network Devices</div>
+                    <div class="stat-value" id="statNetwork">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Bad Frequencies</div>
+                    <div class="stat-value" id="statBadFreq">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Interfering</div>
+                    <div class="stat-value" id="statInterfering">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">SSH Connected</div>
+                    <div class="stat-value" id="statSSH">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">SNMP Devices</div>
+                    <div class="stat-value" id="statSNMP">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- WiFi Devices Trigger -->
+        <div class="trigger-section">
+            <button class="trigger-btn" onclick="toggleTrigger('wifi')">
+                <div class="trigger-label">
+                    <span class="trigger-icon">📡</span>
+                    <span>WIFI DEVICES</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <span class="trigger-count" id="countWifi">0</span>
+                    <span class="trigger-arrow">▼</span>
+                </div>
+            </button>
+            <div class="trigger-content" id="wifiContent">
+                <div class="panel-body" id="wifiDevices">
+                    <div class="loading">&gt; SCANNING WIRELESS SPECTRUM...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signal & Frequency Analysis Trigger -->
+        <div class="trigger-section">
+            <button class="trigger-btn" onclick="toggleTrigger('analysis')">
+                <div class="trigger-label">
+                    <span class="trigger-icon">📊</span>
+                    <span>SIGNAL & FREQUENCY ANALYSIS</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <span class="trigger-arrow">▼</span>
+                </div>
+            </button>
+            <div class="trigger-content" id="analysisContent">
+                <div class="chart-grid">
+                    <div class="chart-panel">
+                        <div class="chart-title">// SIGNAL STRENGTH DISTRIBUTION</div>
+                        <div class="chart-container">
+                            <canvas id="signalChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-panel">
+                        <div class="chart-title">// FREQUENCY BANDS</div>
+                        <div class="chart-container">
+                            <canvas id="freqChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bad Frequencies Trigger -->
+        <div class="trigger-section">
+            <button class="trigger-btn" onclick="toggleTrigger('badfreq')">
+                <div class="trigger-label">
+                    <span class="trigger-icon">🔴</span>
+                    <span>BAD FREQUENCIES</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <span class="trigger-count" id="countBadFreq">0</span>
+                    <span class="trigger-arrow">▼</span>
+                </div>
+            </button>
+            <div class="trigger-content" id="badfreqContent">
+                <div class="panel-body" id="badFrequencies">
+                    <div class="empty-state">
+                        <div class="empty-icon">[OK]</div>
+                        <div>&gt; NO INTERFERENCE DETECTED</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Network Devices Trigger -->
+        <div class="trigger-section">
+            <button class="trigger-btn" onclick="toggleTrigger('network')">
+                <div class="trigger-label">
+                    <span class="trigger-icon">🌐</span>
+                    <span>NETWORK DEVICES</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <span class="trigger-count" id="countNetwork">0</span>
+                    <span class="trigger-arrow">▼</span>
+                </div>
+            </button>
+            <div class="trigger-content" id="networkContent">
+                <div class="panel-body" id="networkDevices">
+                    <div class="loading">&gt; SCANNING NETWORK...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="ascii-border">
+                ═══════════════════════════════════════════════════════════════════════════════════════════════════════
+            </div>
+            <div style="margin: 10px 0;">
+                NETWATCH v2.0 // REAL-TIME NETWORK MONITORING // POWERED BY PYTHON
+            </div>
+            <div class="ascii-border">
+                ═══════════════════════════════════════════════════════════════════════════════════════════════════════
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let signalChart = null;
+        let freqChart = null;
+
+        // Chart.js default colors for cyberpunk theme
+        Chart.defaults.color = '#00f7ff';
+        Chart.defaults.borderColor = 'rgba(0, 247, 255, 0.2)';
+
+        // Toggle trigger sections
+        function toggleTrigger(section) {
+            const btn = event.currentTarget;
+            const content = document.getElementById(section + 'Content');
+
+            btn.classList.toggle('active');
+            content.classList.toggle('active');
+
+            // Initialize charts when analysis section opens
+            if (section === 'analysis' && content.classList.contains('active')) {
+                setTimeout(() => {
+                    if (!signalChart || !freqChart) {
+                        initCharts();
+                    }
+                }, 100);
+            }
+        }
+
+        // Monitor Mode Control Functions
+        async function checkMonitorStatus() {
+            try {
+                const response = await fetch('/api/wifi/monitor/status');
+                const data = await response.json();
+
+                const statusElement = document.getElementById('monitorStatus');
+                const interfaceElement = document.getElementById('monitorInterface');
+                const btnEnable = document.getElementById('btnEnableMonitor');
+                const btnDisable = document.getElementById('btnDisableMonitor');
+
+                if (data.monitor_mode) {
+                    statusElement.textContent = 'ENABLED';
+                    statusElement.style.color = 'var(--neon-green)';
+                    interfaceElement.textContent = `Interface: ${data.interface || 'Unknown'} (Monitor Mode)`;
+                    btnEnable.style.display = 'none';
+                    btnDisable.style.display = 'block';
+                } else {
+                    statusElement.textContent = 'DISABLED';
+                    statusElement.style.color = 'var(--neon-red)';
+                    interfaceElement.textContent = `Interface: ${data.interface || 'Unknown'} (Managed Mode)`;
+                    btnEnable.style.display = 'block';
+                    btnDisable.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error checking monitor status:', error);
+                document.getElementById('monitorInterface').textContent = 'Interface: Error checking status';
+            }
+        }
+
+        async function enableMonitorMode() {
+            const messageDiv = document.getElementById('monitorMessage');
+            const btnEnable = document.getElementById('btnEnableMonitor');
+
+            btnEnable.disabled = true;
+            btnEnable.textContent = '⟳ ENABLING...';
+
+            messageDiv.style.display = 'block';
+            messageDiv.style.borderColor = 'var(--neon-cyan)';
+            messageDiv.style.color = 'var(--neon-cyan)';
+            messageDiv.textContent = '⟳ Enabling monitor mode... Please wait.';
+
+            try {
+                const response = await fetch('/api/wifi/monitor/enable', { method: 'POST' });
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    messageDiv.style.borderColor = 'var(--neon-green)';
+                    messageDiv.style.color = 'var(--neon-green)';
+                    messageDiv.textContent = `✓ ${data.message || 'Monitor mode enabled successfully!'}`;
+
+                    // Update status
+                    setTimeout(() => {
+                        checkMonitorStatus();
+                        messageDiv.style.display = 'none';
+                    }, 2000);
+                } else {
+                    throw new Error(data.error || 'Failed to enable monitor mode');
+                }
+            } catch (error) {
+                messageDiv.style.borderColor = 'var(--neon-red)';
+                messageDiv.style.color = 'var(--neon-red)';
+                messageDiv.textContent = `✖ Error: ${error.message}`;
+
+                btnEnable.disabled = false;
+                btnEnable.textContent = '▶ ENABLE';
+            }
+        }
+
+        async function disableMonitorMode() {
+            const messageDiv = document.getElementById('monitorMessage');
+            const btnDisable = document.getElementById('btnDisableMonitor');
+
+            btnDisable.disabled = true;
+            btnDisable.textContent = '⟳ DISABLING...';
+
+            messageDiv.style.display = 'block';
+            messageDiv.style.borderColor = 'var(--neon-cyan)';
+            messageDiv.style.color = 'var(--neon-cyan)';
+            messageDiv.textContent = '⟳ Disabling monitor mode... Please wait.';
+
+            try {
+                const response = await fetch('/api/wifi/monitor/disable', { method: 'POST' });
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    messageDiv.style.borderColor = 'var(--neon-green)';
+                    messageDiv.style.color = 'var(--neon-green)';
+                    messageDiv.textContent = `✓ ${data.message || 'Monitor mode disabled successfully!'}`;
+
+                    // Update status
+                    setTimeout(() => {
+                        checkMonitorStatus();
+                        messageDiv.style.display = 'none';
+                    }, 2000);
+                } else {
+                    throw new Error(data.error || 'Failed to disable monitor mode');
+                }
+            } catch (error) {
+                messageDiv.style.borderColor = 'var(--neon-red)';
+                messageDiv.style.color = 'var(--neon-red)';
+                messageDiv.textContent = `✖ Error: ${error.message}`;
+
+                btnDisable.disabled = false;
+                btnDisable.textContent = '■ DISABLE';
+            }
+        }
+
+        function updateDashboard() {
+            fetch('/api/scan')
+                .then(response => response.json())
+                .then(data => {
+                    updateConnectionStatus(data.connection_status);
+                    updateStatistics(data);
+                    updateWiFiDevices(data.wifi_devices || []);
+                    updateBadFrequencies(data.bad_frequencies || []);
+                    updateNetworkDevices(data.network_devices || []);
+                    updateCharts(data);
+                    updateLastUpdate(data.last_update);
+                    checkMonitorStatus(); // Check monitor mode status
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    document.getElementById('lastUpdate').textContent = 'ERROR';
+                    document.getElementById('statusDot').classList.add('error');
+                });
+        }
+
+        function updateConnectionStatus(connStatus) {
+            const badge = document.getElementById('connectionStatus');
+            const text = document.getElementById('connectionText');
+            const icon = document.getElementById('connectionIcon');
+
+            if (!connStatus) {
+                badge.className = 'connection-badge disconnected';
+                text.textContent = 'NO CONNECTION';
+                icon.textContent = '✖';
+
+                // Clear network config
+                document.getElementById('netIP').textContent = '-';
+                document.getElementById('netSubnet').textContent = '-';
+                document.getElementById('netGateway').textContent = '-';
+                document.getElementById('netDNS').textContent = '-';
+                document.getElementById('netDHCP').textContent = '-';
+                document.getElementById('netMAC').textContent = '-';
+                return;
+            }
+
+            if (connStatus.connected) {
+                if (connStatus.type === 'ethernet') {
+                    badge.className = 'connection-badge ethernet';
+                    text.textContent = `ETHERNET // ${connStatus.interface || 'UNKNOWN'}`;
+                    icon.textContent = '◆';
+                } else if (connStatus.type === 'wireless') {
+                    badge.className = 'connection-badge wireless';
+                    text.textContent = `WIRELESS // ${connStatus.interface || 'UNKNOWN'}`;
+                    icon.textContent = '◈';
+                } else {
+                    badge.className = 'connection-badge';
+                    text.textContent = 'CONNECTED';
+                    icon.textContent = '●';
+                }
+
+                // Update network config display
+                document.getElementById('netIP').textContent = connStatus.ip_address || '-';
+                document.getElementById('netSubnet').textContent = connStatus.subnet_mask_full || connStatus.subnet_mask || '-';
+                document.getElementById('netGateway').textContent = connStatus.gateway || '-';
+
+                const dns = connStatus.dns_servers || [];
+                document.getElementById('netDNS').textContent = dns.length > 0 ? dns.slice(0, 2).join(', ') : '-';
+
+                const dhcp = connStatus.ip_assignment || '-';
+                const dhcpElement = document.getElementById('netDHCP');
+                dhcpElement.textContent = dhcp.toUpperCase();
+                dhcpElement.style.color = dhcp === 'dhcp' ? 'var(--neon-green)' : 'var(--neon-orange)';
+
+                document.getElementById('netMAC').textContent = connStatus.mac_address || '-';
+            } else {
+                badge.className = 'connection-badge disconnected';
+                text.textContent = 'DISCONNECTED';
+                icon.textContent = '✖';
+
+                // Clear network config
+                document.getElementById('netIP').textContent = '-';
+                document.getElementById('netSubnet').textContent = '-';
+                document.getElementById('netGateway').textContent = '-';
+                document.getElementById('netDNS').textContent = '-';
+                document.getElementById('netDHCP').textContent = '-';
+                document.getElementById('netMAC').textContent = '-';
+            }
+        }
+
+        function updateStatistics(data) {
+            const wifiDevices = data.wifi_devices || [];
+            const networkDevices = data.network_devices || [];
+            const badFreq = data.bad_frequencies || [];
+            const interference = (data.interference_log || []).filter(d => d.interfering).length;
+            const sshConnected = networkDevices.filter(d => d.ssh_status === 'connected').length;
+            const snmpCount = Object.keys(data.snmp_data || {}).length;
+
+            document.getElementById('statWifi').textContent = wifiDevices.length;
+            document.getElementById('statNetwork').textContent = networkDevices.length;
+            document.getElementById('statBadFreq').textContent = badFreq.length;
+            document.getElementById('statInterfering').textContent = interference;
+            document.getElementById('statSSH').textContent = sshConnected;
+            document.getElementById('statSNMP').textContent = snmpCount;
+
+            document.getElementById('countWifi').textContent = wifiDevices.length;
+            document.getElementById('countBadFreq').textContent = badFreq.length;
+            document.getElementById('countNetwork').textContent = networkDevices.length;
+        }
+
+        function updateWiFiDevices(devices) {
+            const container = document.getElementById('wifiDevices');
+
+            if (devices.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-icon">[  ]</div><div>&gt; NO WIFI DEVICES DETECTED</div></div>';
+                return;
+            }
+
+            container.innerHTML = devices.slice(0, 20).map(device => {
+                const signal = device.signal || 'N/A';
+                const freq = device.freq || 'N/A';
+                const interfering = device.interfering;
+                const itemClass = interfering ? 'device-item warning' : 'device-item';
+                const badge = interfering ? '<span class="badge badge-warning">INTERFERENCE</span>' : '<span class="badge badge-ok">OK</span>';
+
+                return `
+                    <div class="${itemClass}">
+                        <div class="device-header">
+                            <span class="device-mac">${device.mac || 'UNKNOWN'}</span>
+                            ${badge}
+                        </div>
+                        <div class="device-details">
+                            &gt; SIGNAL: ${signal} dBm | FREQ: ${freq} MHz
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateBadFrequencies(badFreq) {
+            const container = document.getElementById('badFrequencies');
+
+            if (badFreq.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-icon">[OK]</div><div>&gt; NO INTERFERENCE DETECTED</div></div>';
+                return;
+            }
+
+            container.innerHTML = badFreq.slice(0, 20).map(bf => {
+                const freq = bf.freq || 'N/A';
+                const signal = bf.signal || 'N/A';
+                const reasons = (bf.reasons || []).join(', ') || 'UNKNOWN';
+
+                return `
+                    <div class="device-item bad">
+                        <div class="device-header">
+                            <span class="device-mac">${freq} MHz</span>
+                            <span class="badge badge-bad">CRITICAL</span>
+                        </div>
+                        <div class="device-details">
+                            &gt; SIGNAL: ${signal} dBm<br>
+                            &gt; REASON: ${reasons}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateNetworkDevices(devices) {
+            const container = document.getElementById('networkDevices');
+
+            if (devices.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-icon">[  ]</div><div>&gt; NO NETWORK DEVICES DISCOVERED</div></div>';
+                return;
+            }
+
+            container.innerHTML = devices.map(device => {
+                const ip = device.ip || 'UNKNOWN';
+                const mac = device.mac || 'N/A';
+                const vendor = device.vendor || 'UNKNOWN';
+                const ports = (device.ports || []).slice(0, 5).join(', ') || 'NONE';
+                const sshStatus = device.ssh_status || 'not connected';
+
+                let sshBadge = '';
+                let deviceClass = 'device-item network-device';
+
+                if (sshStatus === 'connected') {
+                    sshBadge = '<span class="badge badge-ok">SSH ACTIVE</span>';
+                    deviceClass += ' ssh-connected';
+                } else if (sshStatus === 'failed') {
+                    sshBadge = '<span class="badge badge-bad">SSH FAILED</span>';
+                    deviceClass += ' ssh-failed';
+                } else {
+                    sshBadge = '<span class="badge badge-info">NO SSH</span>';
+                }
+
+                const snmpHtml = device.snmp ? `
+                    <div class="snmp-data">
+                        &gt; SNMP: ${device.snmp.sysName || 'N/A'} |
+                        UPTIME: ${device.snmp.sysUpTime || 'N/A'} |
+                        CPU: ${device.snmp.cpuLoad || 'N/A'}% |
+                        MEM: ${device.snmp.freeMemory || 'N/A'}
+                    </div>
+                ` : '';
+
+                return `
+                    <div class="${deviceClass}">
+                        <div class="device-header">
+                            <div>
+                                <span class="device-mac">${ip}</span>
+                                <span style="margin-left: 15px; color: rgba(255,255,255,0.4); font-size: 10px;">${mac}</span>
+                            </div>
+                            ${sshBadge}
+                        </div>
+                        <div class="device-details">
+                            &gt; VENDOR: ${vendor} | PORTS: ${ports}${device.ports && device.ports.length > 5 ? ` (+${device.ports.length - 5})` : ''}
+                            ${snmpHtml}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function initCharts() {
+            const ctx1 = document.getElementById('signalChart');
+            const ctx2 = document.getElementById('freqChart');
+
+            if (ctx1 && !signalChart) {
+                signalChart = new Chart(ctx1.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['EXCELLENT', 'GOOD', 'FAIR', 'POOR', 'CRITICAL'],
+                        datasets: [{
+                            label: 'DEVICES',
+                            data: [0, 0, 0, 0, 0],
+                            backgroundColor: [
+                                'rgba(57, 255, 20, 0.6)',
+                                'rgba(0, 247, 255, 0.6)',
+                                'rgba(255, 102, 0, 0.6)',
+                                'rgba(255, 0, 64, 0.6)',
+                                'rgba(128, 0, 0, 0.6)'
+                            ],
+                            borderColor: [
+                                '#39ff14',
+                                '#00f7ff',
+                                '#ff6600',
+                                '#ff0040',
+                                '#800000'
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { color: '#00f7ff' },
+                                grid: { color: 'rgba(0, 247, 255, 0.1)' }
+                            },
+                            x: {
+                                ticks: { color: '#00f7ff' },
+                                grid: { color: 'rgba(0, 247, 255, 0.1)' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            if (ctx2 && !freqChart) {
+                freqChart = new Chart(ctx2.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['2.4 GHz', '5 GHz'],
+                        datasets: [{
+                            data: [0, 0],
+                            backgroundColor: [
+                                'rgba(0, 247, 255, 0.6)',
+                                'rgba(189, 0, 255, 0.6)'
+                            ],
+                            borderColor: [
+                                '#00f7ff',
+                                '#bd00ff'
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { color: '#00f7ff' }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function updateCharts(data) {
+            const wifiDevices = data.wifi_devices || [];
+
+            // Signal strength distribution
+            const signalRanges = {
+                'EXCELLENT': 0,
+                'GOOD': 0,
+                'FAIR': 0,
+                'POOR': 0,
+                'CRITICAL': 0
+            };
+
+            wifiDevices.forEach(device => {
+                const signal = parseFloat(device.signal) || -100;
+                if (signal >= -50) signalRanges['EXCELLENT']++;
+                else if (signal >= -60) signalRanges['GOOD']++;
+                else if (signal >= -70) signalRanges['FAIR']++;
+                else if (signal >= -80) signalRanges['POOR']++;
+                else signalRanges['CRITICAL']++;
+            });
+
+            // Frequency distribution
+            const freqRanges = {
+                '2.4 GHz': 0,
+                '5 GHz': 0
+            };
+
+            wifiDevices.forEach(device => {
+                const freq = parseFloat(device.freq) || 0;
+                if (freq >= 2400 && freq < 2500) freqRanges['2.4 GHz']++;
+                else if (freq >= 5000 && freq < 6000) freqRanges['5 GHz']++;
+            });
+
+            // Update charts if they exist
+            if (signalChart) {
+                signalChart.data.labels = Object.keys(signalRanges);
+                signalChart.data.datasets[0].data = Object.values(signalRanges);
+                signalChart.update();
+            }
+
+            if (freqChart) {
+                freqChart.data.labels = Object.keys(freqRanges);
+                freqChart.data.datasets[0].data = Object.values(freqRanges);
+                freqChart.update();
+            }
+        }
+
+        function updateLastUpdate(lastUpdate) {
+            const element = document.getElementById('lastUpdate');
+            const dot = document.getElementById('statusDot');
+
+            if (!lastUpdate) {
+                element.textContent = 'NEVER';
+                dot.classList.add('error');
+                return;
+            }
+
+            try {
+                const updateTime = new Date(lastUpdate);
+                const now = new Date();
+                const diffSeconds = Math.floor((now - updateTime) / 1000);
+
+                let timeStr = '';
+                if (diffSeconds < 60) {
+                    timeStr = `${diffSeconds}s AGO`;
+                } else if (diffSeconds < 3600) {
+                    timeStr = `${Math.floor(diffSeconds / 60)}m AGO`;
+                } else {
+                    timeStr = `${Math.floor(diffSeconds / 3600)}h AGO`;
+                }
+
+                element.textContent = timeStr;
+                dot.classList.remove('error');
+            } catch (e) {
+                element.textContent = 'ERROR';
+                dot.classList.add('error');
+            }
+        }
+
+        // Update dashboard every 3 seconds
+        updateDashboard();
+        setInterval(updateDashboard, 3000);
+    </script>
+</body>
+</html>
