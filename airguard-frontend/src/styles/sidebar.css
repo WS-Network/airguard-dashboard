@@ -1,0 +1,116 @@
+/* Sidebar layout, icon, text, active, and mobile menu styles */
+
+.ag-sidebar-item {
+  @apply w-full flex items-center p-3 rounded-lg text-ag-white transition-all duration-200 relative overflow-hidden;
+  min-height: 48px;
+  justify-content: flex-start;
+}
+
+.ag-sidebar-item:hover {
+  @apply bg-ag-green/20 text-ag-green;
+}
+
+.ag-sidebar-item:focus {
+  @apply outline-none ring-2 ring-ag-green/50 bg-ag-green/10;
+}
+
+.ag-sidebar-item:active {
+  @apply bg-ag-green/30;
+}
+
+.ag-sidebar-item.collapsed {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  justify-content: flex-start;
+}
+
+.ag-sidebar-item.expanded {
+  gap: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.ag-sidebar-icon {
+  transition: transform 250ms ease-out;
+  flex-shrink: 0;
+}
+
+.ag-sidebar-item.collapsed .ag-sidebar-icon {
+  transform: translateX(calc(50% - 12px));
+}
+
+.ag-sidebar-item.expanded .ag-sidebar-icon {
+  transform: translateX(0);
+}
+
+.ag-sidebar-text {
+  @apply font-medium whitespace-nowrap;
+  transform-origin: left center;
+  transition: opacity 120ms ease-in-out, transform 120ms ease-in-out,
+    width 120ms ease-in-out;
+}
+
+.ag-sidebar-text.hidden {
+  @apply opacity-0;
+  transform: translateX(-6px);
+  width: 0;
+  overflow: hidden;
+  transition-delay: 0ms;
+}
+
+.ag-sidebar-text.visible {
+  @apply opacity-100;
+  transform: translateX(0);
+  width: auto;
+  transition-delay: 80ms;
+}
+
+.ag-sidebar-item.active {
+  @apply bg-ag-green/30 text-ag-green;
+}
+
+.ag-sidebar-item.active:hover {
+  @apply bg-ag-green/40;
+}
+
+.ag-mobile-menu-button {
+  @apply p-3 bg-ag-green text-ag-black rounded-lg hover:brightness-110 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ag-green/50;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+}
+
+.ag-sidebar-content {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+.ag-main-content {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+.ag-logout-button {
+  @apply text-red-400 hover:bg-red-500/20 hover:text-red-300;
+}
+
+.ag-logout-button:focus {
+  @apply outline-none ring-2 ring-red-500/50 bg-red-500/10;
+}
+
+.ag-logout-button:active {
+  @apply bg-red-500/30;
+}
+
+/* Desktop: Fixed sidebar pushes content to the right */
+@media (min-width: 1024px) {
+  .ag-main-content {
+    /* Sidebar width (5rem/80px) + gap (1.5rem/24px) = 6.5rem/104px */
+    margin-left: 6.5rem;
+    /* No padding-left needed, margin handles the offset */
+  }
+}
+
+/* Tablet and below: No sidebar offset needed (mobile menu is overlay) */
+@media (max-width: 1023px) {
+  .ag-main-content {
+    margin-left: 0;
+  }
+}

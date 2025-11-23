@@ -1,0 +1,201 @@
+// Airguard Web Frontend - Prisma Schema
+// Database: PostgreSQL (Digital Ocean)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                      String   @id @default(cuid())
+  email                   String   @unique
+  passwordHash            String
+  fullName                String
+  country                 String?
+  phoneNumber             String?
+  companyName             String?
+  industry                String?
+  businessType            String?
+  hearAboutUs             String?
+  nonGovernmentEndUser    Boolean  @default(false)
+  acceptTerms             Boolean  @default(false)
+  newsPromotions          Boolean  @default(false)
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  // Relations
+  organization            Organization? @relation("OrganizationMembers", fields: [organizationId], references: [id])
+  organizationId          String?
+  sessions                UserSession[]
+  ownedOrganizations      Organization[] @relation("OrganizationOwner")
+  settings                UserSettings?
+
+  @@map("users")
+}
+
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+
+  // Relations
+  owner     User     @relation("OrganizationOwner", fields: [ownerId], references: [id])
+  ownerId   String
+  users     User[]   @relation("OrganizationMembers")
+  devices   Device[]
+  alerts    Alert[]
+  achievements Achievement[]
+  networkHealth NetworkHealth[]
+
+  @@map("organizations")
+}
+
+model Device {
+  id                    String   @id @default(cuid())
+  name                  String
+  deviceType            String?
+  manufacturer          String?  // Device manufacturer (e.g., Ubiquiti, Cisco)
+  ip                    String?  // IP address
+  macAddress            String?  // MAC address
+  openPorts             String?  // Comma-separated list of open ports
+  sshPort               String?  // SSH port number
+  firmwareVersion       String?
+  latitude              Float?
+  longitude             Float?
+  locationDescription   String?
+  status                String   @default("offline") // online, offline, warning, up, down
+  batteryLevel          Int?
+  lastSeen              DateTime?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  // Relations
+  organization          Organization @relation(fields: [organizationId], references: [id])
+  organizationId        String
+  metrics               DeviceMetric[]
+  alerts                Alert[]
+
+  @@map("devices")
+}
+
+model DeviceMetric {
+  id         String   @id @default(cuid())
+  metricType String   // throughput, health, qos, interference
+  value      Float
+  unit       String?
+  timestamp  DateTime @default(now())
+
+  // Relations
+  device     Device   @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  deviceId   String
+
+  @@map("device_metrics")
+}
+
+model NetworkHealth {
+  id                    String   @id @default(cuid())
+  healthIndex           Float? // 0-100
+  throughputMbps        Float?
+  qosScore              Float?
+  interferenceDbm       Float?
+  predictedLoadPercent  Float?
+  timestamp             DateTime @default(now())
+
+  // Relations
+  organization          Organization @relation(fields: [organizationId], references: [id])
+  organizationId        String
+
+  @@map("network_health")
+}
+
+model Alert {
+  id          String   @id @default(cuid())
+  alertType   String   // warning, success, error, info
+  title       String
+  message     String?
+  severity    String   // low, medium, high, critical
+  isResolved  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  resolvedAt  DateTime?
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  device        Device?     @relation(fields: [deviceId], references: [id])
+  deviceId      String?
+
+  @@map("alerts")
+}
+
+model Achievement {
+  id                String   @id @default(cuid())
+  achievementType   String   // electricity, carbon, esg
+  title             String
+  description       String?
+  currentValue      Float
+  unit              String?
+  progressPercent   Int      @default(0)
+  currentLevel      Int      @default(1)
+  maxLevel          Int      @default(5)
+  nextLevelTarget   Float?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  organization      Organization @relation(fields: [organizationId], references: [id])
+  organizationId    String
+
+  @@map("achievements")
+}
+
+model UserSession {
+  id        String   @id @default(cuid())
+  tokenHash String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+
+  @@map("user_sessions")
+}
+
+model UserSettings {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  openaiApiKey          String?  // Encrypted API key
+  anthropicApiKey       String?  // Encrypted API key
+  theme                 String   @default("dark") // dark, light, auto
+  language              String   @default("en") // en, ar, fr, etc.
+  notifications         Boolean  @default(true)
+  emailNotifications    Boolean  @default(true)
+  pushNotifications     Boolean  @default(true)
+  timezone              String   @default("UTC")
+  dateFormat            String   @default("MM/DD/YYYY")
+  timeFormat            String   @default("12h") // 12h, 24h
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  // Relations
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_settings")
+}
+
+model PairingSession {
+  id                String   @id @default(cuid())
+  sessionToken      String   @unique // Token displayed on frontend for technician to enter on dongle
+  status            String   @default("waiting") // waiting, paired, expired, cancelled
+  deviceId          String?  // Device being paired (null until pairing completes)
+  dongleData        Json?    // GPS coordinates, IMU data from dongle
+  createdAt         DateTime @default(now())
+  expiresAt         DateTime // Session expires after 5 minutes
+  completedAt       DateTime?
+
+  @@map("pairing_sessions")
+}

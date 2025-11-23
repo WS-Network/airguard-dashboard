@@ -1,0 +1,253 @@
+/* Map container */
+.leaflet-container {
+  background: #0a0a0a !important;
+  border-radius: 8px;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Map tiles */
+.leaflet-layer {
+  filter: hue-rotate(60deg) saturate(1.2) brightness(0.9) !important;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Map controls */
+.leaflet-control {
+  background: rgba(0, 0, 0, 0.9) !important;
+  border: 1px solid rgba(75, 85, 99, 0.3) !important;
+  border-radius: 6px !important;
+}
+
+.leaflet-control a {
+  background: rgba(75, 85, 99, 0.1) !important;
+  color: #9ca3af !important;
+  border-radius: 4px !important;
+}
+
+.leaflet-control a:hover {
+  background: rgba(75, 85, 99, 0.2) !important;
+  box-shadow: 0 0 4px rgba(75, 85, 99, 0.3) !important;
+}
+
+/* Popup wrapper */
+.leaflet-popup-content-wrapper {
+  background: rgba(20, 20, 20, 0.98) !important;
+  color: #ffffff !important;
+  border-radius: 6px !important;
+  border: 1px solid rgba(75, 85, 99, 0.5) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(4px) !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  position: relative !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+/* Popup tip */
+.leaflet-popup-tip {
+  background: rgba(20, 20, 20, 0.98) !important;
+  border: 1px solid rgba(75, 85, 99, 0.5) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Hide default close button */
+.leaflet-popup-close-button {
+  display: none !important;
+}
+
+/* Text rendering */
+.leaflet-popup-content * {
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+}
+
+/* Text styles */
+.leaflet-popup-content span,
+.leaflet-popup-content p,
+.leaflet-popup-content h4 {
+  font-weight: 700 !important;
+  color: inherit !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+.leaflet-popup-content {
+  font-weight: 600 !important;
+}
+
+/* Device status colors */
+.device-popup .text-emerald-400 {
+  text-shadow: 0 0 1px rgba(16, 185, 129, 0.15) !important;
+  color: #10b981 !important;
+  font-weight: 800 !important;
+}
+
+.device-popup .text-yellow-400 {
+  text-shadow: 0 0 1px rgba(245, 158, 11, 0.15) !important;
+  color: #f59e0b !important;
+  font-weight: 800 !important;
+}
+
+.device-popup .text-red-400 {
+  text-shadow: 0 0 1px rgba(239, 68, 68, 0.15) !important;
+  color: #ef4444 !important;
+  font-weight: 800 !important;
+}
+
+/* Title effects */
+.device-popup h4.text-emerald-400,
+.device-popup h4.text-yellow-400,
+.device-popup h4.text-red-400 {
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.1) !important;
+  font-weight: 700 !important;
+}
+
+/* Alert text */
+.leaflet-popup-content .text-gray-200 {
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.3) !important;
+  font-weight: 700 !important;
+}
+
+.device-popup-warning .text-gray-200 {
+  color: #fbbf24 !important;
+  text-shadow: 0 0 3px rgba(245, 158, 11, 0.3) !important;
+}
+
+.device-popup-offline .text-gray-200 {
+  color: #fca5a5 !important;
+  text-shadow: 0 0 3px rgba(239, 68, 68, 0.3) !important;
+}
+
+/* Clickable areas */
+.leaflet-popup-content [class*="cursor-pointer"] {
+  border-width: 1px !important;
+  transition: all 0.2s ease !important;
+}
+
+.leaflet-popup-content [class*="cursor-pointer"]:hover {
+  opacity: 0.9 !important;
+}
+
+/* Popup borders and shadows */
+.device-popup .leaflet-popup-content-wrapper {
+  border-color: rgba(16, 185, 129, 0.6) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 12px rgba(16, 185, 129, 0.4) !important;
+}
+
+.device-popup .leaflet-popup-tip {
+  border-color: rgba(16, 185, 129, 0.6) !important;
+}
+
+.device-popup-warning .leaflet-popup-content-wrapper {
+  border-color: rgba(245, 158, 11, 0.6) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 12px rgba(245, 158, 11, 0.4) !important;
+}
+
+.device-popup-warning .leaflet-popup-tip {
+  border-color: rgba(245, 158, 11, 0.6) !important;
+}
+
+.device-popup-offline .leaflet-popup-content-wrapper {
+  border-color: rgba(239, 68, 68, 0.6) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 12px rgba(239, 68, 68, 0.4) !important;
+}
+
+.device-popup-offline .leaflet-popup-tip {
+  border-color: rgba(239, 68, 68, 0.6) !important;
+}
+
+.device-popup-online .leaflet-popup-content-wrapper {
+  border-color: rgba(16, 185, 129, 0.6) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 12px rgba(16, 185, 129, 0.4) !important;
+}
+
+.device-popup-online .leaflet-popup-tip {
+  border-color: rgba(16, 185, 129, 0.6) !important;
+}
+
+/* Popup content */
+.leaflet-popup-content {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  width: auto !important;
+  height: auto !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  font-feature-settings: "liga", "kern" !important;
+  line-height: 1.5 !important;
+  letter-spacing: 0.02em !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-weight: 600 !important;
+}
+
+/* Font weights */
+.leaflet-popup-content .font-bold {
+  font-weight: 900 !important;
+}
+
+.leaflet-popup-content .font-semibold {
+  font-weight: 800 !important;
+}
+
+.leaflet-popup-content .font-medium {
+  font-weight: 700 !important;
+}
+
+/* Device markers */
+.neon-device-marker {
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.7)) !important;
+}
+
+.neon-device-marker-container:hover .neon-device-marker {
+  transform: scale(1.15) !important;
+}
+
+/* Loading spinner */
+.map-loading .animate-spin {
+  filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.3));
+}
+
+/* Attribution */
+.leaflet-control-attribution {
+  background: rgba(0, 0, 0, 0.8) !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  border-radius: 4px !important;
+}
+
+.leaflet-control-attribution a {
+  color: #10b981 !important;
+}
+
+/* Text sizes */
+.leaflet-popup-content .text-xs {
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+}
+
+.leaflet-popup-content .text-sm {
+  font-size: 0.9rem !important;
+  font-weight: 800 !important;
+}
+
+.leaflet-popup-content .text-gray-200,
+.leaflet-popup-content .text-gray-300 {
+  color: #e5e7eb !important;
+  font-weight: 700 !important;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Status buttons */
+.leaflet-popup-content [class*="bg-"][class*="/20"] {
+  backdrop-filter: blur(2px) !important;
+  border-width: 1.5px !important;
+}
