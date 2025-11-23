@@ -1,0 +1,140 @@
+### Airguard Backend API Tests
+### Use with VS Code REST Client extension or curl
+
+@baseUrl = http://localhost:3001
+@authToken = {{login.response.body.data.accessToken}}
+
+### 1. Health Check (No Auth Required)
+GET {{baseUrl}}/health
+
+### 2. User Registration
+# @name signup
+POST {{baseUrl}}/api/auth/signup
+Content-Type: application/json
+
+{
+  "fullName": "Test User",
+  "email": "test@example.com",
+  "password": "password123",
+  "country": "United States",
+  "phoneNumber": "+1234567890",
+  "companyName": "Test Company",
+  "industry": "Technology",
+  "businessType": "Corporation",
+  "hearAboutUs": "Demo",
+  "nonGovernmentEndUser": false,
+  "acceptTerms": true,
+  "newsPromotions": false
+}
+
+### 3. User Login
+# @name login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "demo@airguard.com",
+  "password": "demo123"
+}
+
+### 4. Get User Profile
+GET {{baseUrl}}/api/auth/profile
+Authorization: Bearer {{authToken}}
+
+### 5. Get Dashboard Metrics
+GET {{baseUrl}}/api/dashboard/metrics
+Authorization: Bearer {{authToken}}
+
+### 6. Get All Devices
+GET {{baseUrl}}/api/devices
+Authorization: Bearer {{authToken}}
+
+### 7. Create New Device
+POST {{baseUrl}}/api/devices
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "Test Device #001",
+  "deviceType": "Environmental Monitor",
+  "firmwareVersion": "v1.0.0",
+  "latitude": 33.8938,
+  "longitude": 35.5018,
+  "locationDescription": "Test Location"
+}
+
+### 8. Get Device Statistics
+GET {{baseUrl}}/api/devices/stats
+Authorization: Bearer {{authToken}}
+
+### 9. Get Device Locations
+GET {{baseUrl}}/api/devices/locations
+Authorization: Bearer {{authToken}}
+
+### 10. Start Device Simulation
+POST {{baseUrl}}/api/simulation/start
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "intervalMs": 30000
+}
+
+### 11. Stop Device Simulation
+POST {{baseUrl}}/api/simulation/stop
+
+### 12. Send Device Metrics (Simulate IoT Device)
+POST {{baseUrl}}/api/devices/device-001/metrics
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "metrics": [
+    {
+      "metricType": "throughput",
+      "value": 875.5,
+      "unit": "Mbps"
+    },
+    {
+      "metricType": "health",
+      "value": 98.2,
+      "unit": "%"
+    },
+    {
+      "metricType": "qos",
+      "value": 99.1,
+      "unit": "%"
+    },
+    {
+      "metricType": "interference",
+      "value": -92.0,
+      "unit": "dBm"
+    },
+    {
+      "metricType": "battery",
+      "value": 85,
+      "unit": "%"
+    },
+    {
+      "metricType": "temperature",
+      "value": 24.5,
+      "unit": "°C"
+    }
+  ]
+}
+
+### 13. Get Device Metrics
+GET {{baseUrl}}/api/devices/device-001/metrics
+Authorization: Bearer {{authToken}}
+
+### 14. Refresh Token
+POST {{baseUrl}}/api/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{login.response.body.data.refreshToken}}"
+}
+
+### 15. Logout
+POST {{baseUrl}}/api/auth/logout
+Authorization: Bearer {{authToken}} 

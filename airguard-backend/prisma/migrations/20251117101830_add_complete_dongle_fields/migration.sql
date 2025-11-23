@@ -1,0 +1,17 @@
+-- AlterTable
+ALTER TABLE "devices" ADD COLUMN     "accelerometerX" DOUBLE PRECISION,
+ADD COLUMN     "accelerometerY" DOUBLE PRECISION,
+ADD COLUMN     "accelerometerZ" DOUBLE PRECISION,
+ADD COLUMN     "dongleBatchId" TEXT,
+ADD COLUMN     "dongleDateYMD" INTEGER,
+ADD COLUMN     "dongleGpsFix" INTEGER,
+ADD COLUMN     "dongleMsec" INTEGER,
+ADD COLUMN     "dongleSampleCount" INTEGER,
+ADD COLUMN     "dongleSatellites" INTEGER,
+ADD COLUMN     "dongleSessionMs" INTEGER,
+ADD COLUMN     "dongleTimeHMS" INTEGER,
+ADD COLUMN     "gyroscopeX" DOUBLE PRECISION,
+ADD COLUMN     "gyroscopeY" DOUBLE PRECISION,
+ADD COLUMN     "gyroscopeZ" DOUBLE PRECISION,
+ADD COLUMN     "setupComplete" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "temperature" DOUBLE PRECISION;

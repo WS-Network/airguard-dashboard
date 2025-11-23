@@ -1,0 +1,107 @@
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: airguard-postgres
+    environment:
+      POSTGRES_DB: airguard_db
+      POSTGRES_USER: airguard_user
+      POSTGRES_PASSWORD: airguard_password
+    ports:
+      - "5543:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - airguard-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: airguard-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - airguard-network
+
+  # Airguard Backend API
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: airguard-backend
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_URL: postgresql://airguard_user:airguard_password@postgres:5432/airguard_db
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: your-super-secret-jwt-key-change-in-production
+      JWT_REFRESH_SECRET: your-refresh-secret-key-change-in-production
+      JWT_EXPIRES_IN: 15m
+      JWT_REFRESH_EXPIRES_IN: 7d
+      FRONTEND_URL: http://localhost:3000
+      ENCRYPTION_KEY: "abcdef12345678901234567890123456"
+      ENCRYPTION_ALGORITHM: aes-256-gcm
+      BCRYPT_ROUNDS: 12
+      LOG_LEVEL: info
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - airguard-network
+    command: npm run dev
+
+  # Prisma Studio (Database GUI)
+  prisma-studio:
+    image: node:24-alpine
+    container_name: airguard-prisma-studio
+    working_dir: /app
+    environment:
+      DATABASE_URL: postgresql://airguard_user:airguard_password@postgres:5432/airguard_db
+    ports:
+      - "5555:5555"
+    depends_on:
+      - postgres
+    networks:
+      - airguard-network
+    volumes:
+      - .:/app
+    command: npx prisma studio --hostname 0.0.0.0 --port 5555
+
+  # ESP32 Dongle Microservice
+  dongle-service:
+    build:
+      context: ./dongle-service
+      dockerfile: Dockerfile
+    container_name: airguard-dongle-service
+    environment:
+      SERIAL_PORT: /dev/ttyUSB0
+      SERIAL_BAUD: 115200
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_CHANNEL: dongle:data
+      LOG_LEVEL: INFO
+    depends_on:
+      - redis
+    networks:
+      - airguard-network
+    # Grant USB device access for serial port
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+    # Alternative: Use privileged mode if device permissions needed
+    # privileged: true
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  airguard-network:
+    driver: bridge 

@@ -1,0 +1,280 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                      String   @id @default(cuid())
+  email                   String   @unique
+  passwordHash            String
+  fullName                String
+  country                 String?
+  phoneNumber             String?
+  companyName             String?
+  industry                String?
+  businessType            String?
+  hearAboutUs             String?
+  nonGovernmentEndUser    Boolean  @default(false)
+  acceptTerms             Boolean  @default(false)
+  newsPromotions          Boolean  @default(false)
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  // Relations
+  organization            Organization? @relation("OrganizationMembers", fields: [organizationId], references: [id])
+  organizationId          String?
+  sessions                UserSession[]
+  ownedOrganizations      Organization[] @relation("OrganizationOwner")
+  settings                UserSettings?
+
+  @@map("users")
+}
+
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+
+  // Relations
+  owner     User     @relation("OrganizationOwner", fields: [ownerId], references: [id])
+  ownerId   String
+  users     User[]   @relation("OrganizationMembers")
+  devices   Device[]
+  alerts    Alert[]
+  achievements Achievement[]
+  networkHealth NetworkHealth[]
+
+  @@map("organizations")
+}
+
+model Device {
+  id                    String   @id @default(cuid())
+  name                  String
+  deviceType            String?  // 'airguard', 'access_point', 'router', etc.
+  manufacturer          String?  // Device manufacturer (e.g., "Ubiquiti", "Mikrotik")
+  firmwareVersion       String?
+
+  // Location data (GPS)
+  latitude              Float?
+  longitude             Float?
+  locationDescription   String?
+  altitude              Float?   // From GPS data
+  gpsAccuracy           Float?   // GPS accuracy in meters
+  heading               Float?   // Device heading/orientation
+
+  // Network configuration
+  ipAddress             String?
+  macAddress            String?  @unique // Device MAC address (unique identifier)
+  subnetMask            String?
+  gateway               String?
+  dns1                  String?
+  dns2                  String?
+  openPorts             String?  // Comma-separated list
+  sshPort               String   @default("22")
+
+  // Wireless configuration
+  ssid                  String?
+  password              String?  // Encrypted
+  channel               String?
+  bandwidth             String?
+  securityType          String?
+
+  // Status and management
+  status                String   @default("offline") // "healthy" | "warning" | "critical" | "offline"
+  batteryLevel          Int?
+  lastSeen              DateTime?
+
+  // SSH Configuration
+  sshUsername           String?  // Encrypted
+  sshPasswordHash       String?  // Hashed SSH password
+  sshConfigured         Boolean  @default(false)
+  gpsConfigured         Boolean  @default(false)
+
+  // IMU Sensor Data (from ESP32 dongle)
+  accelerometerX        Float?   // Accelerometer X-axis (m/s²)
+  accelerometerY        Float?   // Accelerometer Y-axis (m/s²)
+  accelerometerZ        Float?   // Accelerometer Z-axis (m/s²)
+  gyroscopeX            Float?   // Gyroscope X-axis (rad/s)
+  gyroscopeY            Float?   // Gyroscope Y-axis (rad/s)
+  gyroscopeZ            Float?   // Gyroscope Z-axis (rad/s)
+  temperature           Float?   // Temperature (°C)
+
+  // Dongle Session Info
+  dongleBatchId         String?  // Unique batch ID from dongle
+  dongleSessionMs       Int?     // Dongle session duration (ms)
+  dongleSampleCount     Int?     // Number of IMU samples collected
+
+  // Dongle Timestamp Info
+  dongleDateYMD         Int?     // Date in YYYYMMDD format
+  dongleTimeHMS         Int?     // Time in HHMMSS format
+  dongleMsec            Int?     // Milliseconds (0-999)
+
+  // Dongle GPS Info
+  dongleGpsFix          Int?     // GPS fix status (0=no fix, 1=fix)
+  dongleSatellites      Int?     // Number of satellites
+
+  // Setup Progress
+  setupComplete         Boolean  @default(false) // Both port scan + dongle data received
+
+  // Timestamps
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  // Relations
+  organization          Organization @relation(fields: [organizationId], references: [id])
+  organizationId        String
+  metrics               DeviceMetric[]
+  alerts                Alert[]
+  gpsLogs               GpsLog[]
+
+  // Managed devices (for Airguard devices only)
+  managedBy             String?  // ID of parent Airguard device
+  parentDevice          Device?  @relation("ManagedDevices", fields: [managedBy], references: [id], onDelete: SetNull)
+  managedDevices        Device[] @relation("ManagedDevices")
+
+  @@map("devices")
+}
+
+model DeviceMetric {
+  id         String   @id @default(cuid())
+  metricType String   // throughput, health, qos, interference
+  value      Float
+  unit       String?
+  timestamp  DateTime @default(now())
+
+  // Relations
+  device     Device   @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  deviceId   String
+
+  @@map("device_metrics")
+}
+
+model NetworkHealth {
+  id                    String   @id @default(cuid())
+  healthIndex           Float? // 0-100
+  throughputMbps        Float?
+  qosScore              Float?
+  interferenceDbm       Float?
+  predictedLoadPercent  Float?
+  timestamp             DateTime @default(now())
+
+  // Relations
+  organization          Organization @relation(fields: [organizationId], references: [id])
+  organizationId        String
+
+  @@map("network_health")
+}
+
+model Alert {
+  id          String   @id @default(cuid())
+  alertType   String   // warning, success, error, info
+  title       String
+  message     String?
+  severity    String   // low, medium, high, critical
+  isResolved  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  resolvedAt  DateTime?
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  device        Device?     @relation(fields: [deviceId], references: [id])
+  deviceId      String?
+
+  @@map("alerts")
+}
+
+model Achievement {
+  id                String   @id @default(cuid())
+  achievementType   String   // electricity, carbon, esg
+  title             String
+  description       String?
+  currentValue      Float
+  unit              String?
+  progressPercent   Int      @default(0)
+  currentLevel      Int      @default(1)
+  maxLevel          Int      @default(5)
+  nextLevelTarget   Float?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  organization      Organization @relation(fields: [organizationId], references: [id])
+  organizationId    String
+
+  @@map("achievements")
+}
+
+model UserSession {
+  id        String   @id @default(cuid())
+  tokenHash String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+
+  @@map("user_sessions")
+}
+
+model UserSettings {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  openaiApiKey          String?  // Encrypted API key
+  anthropicApiKey       String?  // Encrypted API key
+  theme                 String   @default("dark") // dark, light, auto
+  language              String   @default("en") // en, ar, fr, etc.
+  notifications         Boolean  @default(true)
+  emailNotifications    Boolean  @default(true)
+  pushNotifications     Boolean  @default(true)
+  timezone              String   @default("UTC")
+  dateFormat            String   @default("MM/DD/YYYY")
+  timeFormat            String   @default("12h") // 12h, 24h
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  // Relations
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_settings")
+}
+
+// NEW MODEL: Pairing sessions for ESP32 dongle device registration
+model PairingSession {
+  id          String   @id @default(cuid())
+  sessionId   String   @unique // UUID for tracking pairing attempts
+  status      String   @default("waiting") // "waiting" | "paired" | "timeout"
+  deviceId    String?  // ID of created device (null until paired)
+  dongleId    String?  // ID of ESP32 dongle that initiated pairing
+  expiresAt   DateTime // Session timeout (typically 60 seconds)
+  createdAt   DateTime @default(now())
+
+  @@map("pairing_sessions")
+}
+
+// NEW MODEL: GPS synchronization audit trail
+model GpsLog {
+  id          String   @id @default(cuid())
+  deviceId    String
+  device      Device   @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+
+  latitude    Float
+  longitude   Float
+  altitude    Float
+  accuracy    Float    // GPS accuracy in meters
+  heading     Float    // Device heading/orientation
+
+  syncMethod  String   // "dongle" | "manual" | "api"
+  timestamp   DateTime @default(now())
+
+  @@map("gps_logs")
+  @@index([deviceId])
+} 
