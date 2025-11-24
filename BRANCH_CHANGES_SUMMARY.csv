@@ -1,0 +1,7 @@
+Branch Name,Current Status,Files Count Before,Files Count After,Action Needed,Priority,Notes
+claude/review-master-prompt,Clean & Updated,30 MD files,2 main MD files,Merge to main,HIGH,All integration complete - ready to merge
+main,Needs Cleanup,~30 old MD files,2 main MD files,Merge from claude branch,HIGH,Will receive all cleaned documentation
+backend,Outdated,14 backend MD files,0 (from main),Merge from main OR delete,MEDIUM,Backend code integrated into main/airguard-backend
+frontend,Outdated,8 frontend MD files,0 (from main),Merge from main OR delete,MEDIUM,Frontend code integrated into main/airguard-frontend
+iot,Clean,7 useful MD files,7 MD files,Keep as-is,LOW,Hardware-specific docs - useful reference
+netwatch,Clean,8 useful MD files,8 MD files,Keep as-is,LOW,Component-specific docs - useful reference

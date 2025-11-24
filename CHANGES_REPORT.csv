@@ -1,0 +1,82 @@
+Change Type,Branch,Action,File Path,Status,Description,Commit Hash
+Documentation,claude/review-master-prompt,Added,README.md,Completed,Complete project overview with architecture and deployment,2866872
+Documentation,claude/review-master-prompt,Added,DEVELOPMENT.md,Completed,Development planning and task tracking guide,2866872
+Documentation,claude/review-master-prompt,Removed,INTEGRATION_GUIDE.md,Completed,Consolidated into README.md,2866872
+Documentation,claude/review-master-prompt,Removed,JETSON_DEPLOYMENT_GUIDE.md,Completed,Consolidated into README.md,2866872
+Documentation,claude/review-master-prompt,Removed,JETSON_SUCCESS.md,Completed,Old test report - no longer needed,2866872
+Documentation,claude/review-master-prompt,Removed,LOCAL_AGENT_SETUP_REPORT.md,Completed,Old report - consolidated into DEVELOPMENT.md,2866872
+Documentation,claude/review-master-prompt,Removed,LOCAL_AGENT_TEST_REPORT.md,Completed,Old test report - no longer needed,2866872
+Documentation,claude/review-master-prompt,Removed,MANAGED_DEVICE_TEST_PLAN.md,Completed,Old test plan - consolidated into DEVELOPMENT.md,2866872
+Documentation,claude/review-master-prompt,Removed,QUICKSTART_JETSON.md,Completed,Consolidated into README.md,2866872
+Documentation,claude/review-master-prompt,Removed,UPDATED_SETUP_REPORT.md,Completed,Old report - no longer needed,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-backend/CLAUDE.md,Completed,Old AI assistant notes - obsolete,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-backend/COMMANDS-CHEATSHEET.md,Completed,Consolidated into DEVELOPMENT.md,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-backend/DATA_SOURCES.md,Completed,Information in backend README,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-backend/E2E-TESTING-NOW.md,Completed,Consolidated into DEVELOPMENT.md testing section,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-backend/FRONTEND_FIX_NEEDED.md,Completed,Issues resolved - no longer needed,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-backend/IMPLEMENTATION-ORDER.md,Completed,Consolidated into DEVELOPMENT.md roadmap,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-backend/LOCAL_AGENT_INSTRUCTIONS.md,Completed,Consolidated into DEVELOPMENT.md,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-backend/LOCAL_TESTING_GUIDE.md,Completed,Consolidated into DEVELOPMENT.md testing section,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-backend/MICROSERVICES.md,Completed,Consolidated into README.md architecture,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-backend/PLAYWRIGHT-MCP-SETUP.md,Completed,Testing approach changed - obsolete,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-backend/PLAYWRIGHT-TESTING-GUIDE.md,Completed,Consolidated into DEVELOPMENT.md,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-backend/QUICKSTART-DONGLE.md,Completed,Consolidated into README.md,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-backend/README-DEPLOYMENT.md,Completed,Consolidated into README.md deployment section,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-backend/STEP-BY-STEP-FROM-NOW.md,Completed,Consolidated into DEVELOPMENT.md,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-frontend/BACKEND_INTEGRATION_INSTRUCTIONS.md,Completed,Integration complete - no longer needed,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-frontend/CHANGELOG.md,Completed,Use git history instead,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-frontend/CLAUDE.md,Completed,Old AI assistant notes - obsolete,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-frontend/INTEGRATION_GUIDE.md,Completed,Consolidated into README.md,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-frontend/LOCAL_AGENT_INSTRUCTIONS.md,Completed,Consolidated into DEVELOPMENT.md,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-frontend/LOCAL_AGENT_UX_TEST_INSTRUCTIONS.md,Completed,Consolidated into DEVELOPMENT.md,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-frontend/LOCAL_TESTING_INSTRUCTIONS.md,Completed,Consolidated into DEVELOPMENT.md,2866872
+Documentation,claude/review-master-prompt,Removed,airguard-frontend/README-DEPLOYMENT.md,Completed,Consolidated into README.md,2866872
+Documentation,claude/review-master-prompt,Kept,MASTER_AI_PROMPT.md,Completed,Original project specification - important reference,N/A
+Documentation,claude/review-master-prompt,Kept,airguard-backend/README.md,Completed,Backend-specific documentation,N/A
+Documentation,claude/review-master-prompt,Kept,airguard-frontend/README.md,Completed,Frontend-specific documentation,N/A
+Documentation,claude/review-master-prompt,Kept,airguard-esp32-iot-postgresql/README.md,Completed,IoT dongle documentation,N/A
+Documentation,claude/review-master-prompt,Kept,netwatch.new/README.md,Completed,NetWatch documentation,N/A
+Backend Service,claude/review-master-prompt,Added,airguard-backend/src/services/netwatchService.ts,Completed,NetWatch API integration service,b772c39
+Backend Controller,claude/review-master-prompt,Added,airguard-backend/src/controllers/netwatchController.ts,Completed,NetWatch REST API endpoints,b772c39
+Backend Routes,claude/review-master-prompt,Modified,airguard-backend/src/index.ts,Completed,Added NetWatch routes and integration,b772c39
+Frontend API,claude/review-master-prompt,Modified,airguard-frontend/src/services/api.ts,Completed,Added NetWatch API methods and pairing endpoints,91dc255
+Frontend Component,claude/review-master-prompt,Modified,airguard-frontend/src/components/dashboard/DeviceSetupTable.tsx,Completed,Integrated real pairing API with polling,91dc255
+Deployment,claude/review-master-prompt,Added,deploy-jetson.sh,Completed,Automated Jetson deployment script,efd141b
+Deployment,claude/review-master-prompt,Added,deploy-local.sh,Completed,Local deployment script (no git clone),82fae26
+Deployment,claude/review-master-prompt,Added,start-integration.sh,Completed,Development mode startup script,91dc255
+Deployment,claude/review-master-prompt,Added,stop-integration.sh,Completed,Stop all services script,91dc255
+Configuration,claude/review-master-prompt,Added,airguard-backend/.env.example,Completed,Backend environment template,91dc255
+Configuration,claude/review-master-prompt,Added,airguard-esp32-iot-postgresql/mqtt-broker/.env,Completed,MQTT broker configuration,91dc255
+Configuration,claude/review-master-prompt,Added,airguard-esp32-iot-postgresql/host/python-gateway/.env,Completed,Python gateway configuration,91dc255
+NetWatch,claude/review-master-prompt,Modified,netwatch.new/api/rest_api.py,Completed,Renamed from .download extension,b772c39
+Branch Merge,main,Planned,Merge claude/review-master-prompt,Pending,Merge all changes to main branch,N/A
+Branch Cleanup,main,Planned,Remove old documentation files,Pending,Same 30 files as removed from claude branch,N/A
+Branch Cleanup,backend,Planned,Merge from main,Pending,Update backend branch with cleaned docs,N/A
+Branch Cleanup,backend,Planned,Remove old documentation,Pending,Remove 14 backend MD files,N/A
+Branch Cleanup,frontend,Planned,Merge from main,Pending,Update frontend branch with cleaned docs,N/A
+Branch Cleanup,frontend,Planned,Remove old documentation,Pending,Remove 8 frontend MD files,N/A
+Branch Decision,backend,Planned,Consider deletion,Pending,Backend code integrated into main - branch may be obsolete,N/A
+Branch Decision,frontend,Planned,Consider deletion,Pending,Frontend code integrated into main - branch may be obsolete,N/A
+Branch Status,iot,Keep,No changes needed,N/A,Contains useful ESP32 hardware documentation,N/A
+Branch Status,netwatch,Keep,No changes needed,N/A,Contains useful network scanning documentation,N/A
+Documentation,iot,Keep,airguard-esp32-iot-postgresql/PIN-CONNECTIONS.md,N/A,ESP32 wiring diagrams - hardware reference,N/A
+Documentation,iot,Keep,airguard-esp32-iot-postgresql/SETUP-LINUX.md,N/A,Linux serial port setup - useful for development,N/A
+Documentation,iot,Keep,airguard-esp32-iot-postgresql/TESTING-GUIDE.md,N/A,Hardware testing procedures,N/A
+Documentation,iot,Keep,airguard-esp32-iot-postgresql/SCRIPTS.md,N/A,Helper scripts documentation,N/A
+Documentation,iot,Keep,airguard-esp32-iot-postgresql/INTEGRATION.md,N/A,Integration instructions,N/A
+Documentation,iot,Keep,airguard-esp32-iot-postgresql/SSH-ACCESS.md,N/A,SSH access setup,N/A
+Documentation,netwatch,Keep,netwatch.new/API_SUMMARY.md,N/A,NetWatch API reference,N/A
+Documentation,netwatch,Keep,netwatch.new/QUICKSTART.md,N/A,Quick start guide for NetWatch,N/A
+Documentation,netwatch,Keep,netwatch.new/MONITOR_MODE_GUIDE.md,N/A,WiFi monitor mode setup,N/A
+Documentation,netwatch,Keep,netwatch.new/LOGGING_INFO.md,N/A,Logging configuration,N/A
+Documentation,netwatch,Keep,netwatch.new/DASHBOARD_GUIDE.md,N/A,NetWatch dashboard usage,N/A
+Documentation,netwatch,Keep,netwatch.new/INSTALL.md,N/A,Installation instructions,N/A
+Documentation,netwatch,Keep,netwatch.new/FIX_JSON_ERROR.md,N/A,Troubleshooting guide,N/A
+Documentation,netwatch,Keep,netwatch.new/RENABLE_MONITOR_FIX.md,N/A,Monitor mode fixes,N/A
+Documentation,netwatch,Modified,netwatch.new/api/README.md,Completed,Updated copyright year and formatting,N/A
+Summary,ALL,Completed,Files Removed: 30,Completed,Total documentation files removed,N/A
+Summary,ALL,Completed,Files Added: 12,Completed,New documentation and deployment scripts,N/A
+Summary,ALL,Completed,Files Modified: 5,Completed,Integration code and API updates,N/A
+Summary,ALL,Kept,Component Docs: 14,N/A,Useful hardware/component-specific docs retained,N/A
+Summary,claude/review-master-prompt,Completed,Net Change: -13672 lines,Completed,Removed 13672 lines of redundant documentation,N/A
+Summary,claude/review-master-prompt,Completed,Added: 1138 lines,Completed,Added comprehensive consolidated documentation,N/A

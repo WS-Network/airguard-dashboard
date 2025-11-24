@@ -1,0 +1,11 @@
+Action ID,Priority,Action Type,Description,Branch,Commands Required,Dependencies,Estimated Time,Status
+ACT-001,HIGH,Branch Merge,Merge cleaned branch to main,main,"git checkout main; git merge claude/review-master-prompt --no-ff",None,2 min,Pending
+ACT-002,HIGH,Documentation Cleanup,Remove old docs from main,main,Already in merge commit,ACT-001,0 min,Auto with merge
+ACT-003,MEDIUM,Branch Update,Update backend branch from main,backend,"git checkout backend; git merge main",ACT-001,2 min,Pending
+ACT-004,MEDIUM,Branch Update,Update frontend branch from main,frontend,"git checkout frontend; git merge main",ACT-001,2 min,Pending
+ACT-005,LOW,Branch Decision,Decide to keep or delete backend branch,backend,git branch -d backend; git push origin --delete backend,ACT-003,1 min,Pending Decision
+ACT-006,LOW,Branch Decision,Decide to keep or delete frontend branch,frontend,git branch -d frontend; git push origin --delete frontend,ACT-004,1 min,Pending Decision
+ACT-007,LOW,Branch Decision,Decide to delete working branch,claude/review-master-prompt,git branch -d claude/review-master-prompt,ACT-001,1 min,Pending Decision
+ACT-008,INFO,No Action,Keep iot branch as-is,iot,None,None,0 min,Complete
+ACT-009,INFO,No Action,Keep netwatch branch as-is,netwatch,None,None,0 min,Complete
+ACT-010,LOW,Tag Creation,Tag main branch with version,main,git tag v1.0.0; git push origin v1.0.0,ACT-001,1 min,Optional

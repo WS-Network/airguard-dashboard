@@ -1,0 +1,75 @@
+Category,Subcategory,File Name,Location,Action Taken,Reason,New Location
+Documentation,Main Project,README.md,Root,Created,Complete project overview with all information,Root
+Documentation,Main Project,DEVELOPMENT.md,Root,Created,Development planning and task tracking,Root
+Documentation,Main Project,MASTER_AI_PROMPT.md,Root,Kept,Original specification - important reference,Root
+Documentation,Old Reports,JETSON_SUCCESS.md,Root,Removed,Old test report - obsolete,N/A
+Documentation,Old Reports,LOCAL_AGENT_SETUP_REPORT.md,Root,Removed,Old setup report - obsolete,N/A
+Documentation,Old Reports,LOCAL_AGENT_TEST_REPORT.md,Root,Removed,Old test report - obsolete,N/A
+Documentation,Old Reports,UPDATED_SETUP_REPORT.md,Root,Removed,Old update report - obsolete,N/A
+Documentation,Old Guides,INTEGRATION_GUIDE.md,Root,Removed,Consolidated into README.md,README.md
+Documentation,Old Guides,JETSON_DEPLOYMENT_GUIDE.md,Root,Removed,Consolidated into README.md,README.md
+Documentation,Old Guides,QUICKSTART_JETSON.md,Root,Removed,Consolidated into README.md,README.md
+Documentation,Old Test Plans,MANAGED_DEVICE_TEST_PLAN.md,Root,Removed,Consolidated into DEVELOPMENT.md,DEVELOPMENT.md
+Documentation,Backend Old,CLAUDE.md,airguard-backend/,Removed,Old AI notes - obsolete,N/A
+Documentation,Backend Old,COMMANDS-CHEATSHEET.md,airguard-backend/,Removed,Consolidated into DEVELOPMENT.md,DEVELOPMENT.md
+Documentation,Backend Old,DATA_SOURCES.md,airguard-backend/,Removed,Info in backend README,airguard-backend/README.md
+Documentation,Backend Old,E2E-TESTING-NOW.md,airguard-backend/,Removed,Consolidated into DEVELOPMENT.md,DEVELOPMENT.md
+Documentation,Backend Old,FRONTEND_FIX_NEEDED.md,airguard-backend/,Removed,Issues resolved,N/A
+Documentation,Backend Old,IMPLEMENTATION-ORDER.md,airguard-backend/,Removed,Consolidated into DEVELOPMENT.md,DEVELOPMENT.md
+Documentation,Backend Old,LOCAL_AGENT_INSTRUCTIONS.md,airguard-backend/,Removed,Consolidated into DEVELOPMENT.md,DEVELOPMENT.md
+Documentation,Backend Old,LOCAL_TESTING_GUIDE.md,airguard-backend/,Removed,Consolidated into DEVELOPMENT.md,DEVELOPMENT.md
+Documentation,Backend Old,MICROSERVICES.md,airguard-backend/,Removed,Consolidated into README.md,README.md
+Documentation,Backend Old,PLAYWRIGHT-MCP-SETUP.md,airguard-backend/,Removed,Testing approach changed,N/A
+Documentation,Backend Old,PLAYWRIGHT-TESTING-GUIDE.md,airguard-backend/,Removed,Consolidated into DEVELOPMENT.md,DEVELOPMENT.md
+Documentation,Backend Old,QUICKSTART-DONGLE.md,airguard-backend/,Removed,Consolidated into README.md,README.md
+Documentation,Backend Old,README-DEPLOYMENT.md,airguard-backend/,Removed,Consolidated into README.md,README.md
+Documentation,Backend Old,STEP-BY-STEP-FROM-NOW.md,airguard-backend/,Removed,Consolidated into DEVELOPMENT.md,DEVELOPMENT.md
+Documentation,Backend Current,README.md,airguard-backend/,Kept,Backend-specific documentation,airguard-backend/
+Documentation,Frontend Old,BACKEND_INTEGRATION_INSTRUCTIONS.md,airguard-frontend/,Removed,Integration complete,N/A
+Documentation,Frontend Old,CHANGELOG.md,airguard-frontend/,Removed,Use git history,N/A
+Documentation,Frontend Old,CLAUDE.md,airguard-frontend/,Removed,Old AI notes - obsolete,N/A
+Documentation,Frontend Old,INTEGRATION_GUIDE.md,airguard-frontend/,Removed,Consolidated into README.md,README.md
+Documentation,Frontend Old,LOCAL_AGENT_INSTRUCTIONS.md,airguard-frontend/,Removed,Consolidated into DEVELOPMENT.md,DEVELOPMENT.md
+Documentation,Frontend Old,LOCAL_AGENT_UX_TEST_INSTRUCTIONS.md,airguard-frontend/,Removed,Consolidated into DEVELOPMENT.md,DEVELOPMENT.md
+Documentation,Frontend Old,LOCAL_TESTING_INSTRUCTIONS.md,airguard-frontend/,Removed,Consolidated into DEVELOPMENT.md,DEVELOPMENT.md
+Documentation,Frontend Old,README-DEPLOYMENT.md,airguard-frontend/,Removed,Consolidated into README.md,README.md
+Documentation,Frontend Current,README.md,airguard-frontend/,Kept,Frontend-specific documentation,airguard-frontend/
+Documentation,Frontend Detailed,docs/README.md,airguard-frontend/docs/,Kept,Detailed frontend documentation,airguard-frontend/docs/
+Documentation,Frontend Detailed,docs/architecture.md,airguard-frontend/docs/,Kept,Architecture details,airguard-frontend/docs/
+Documentation,Frontend Detailed,docs/getting-started.md,airguard-frontend/docs/,Kept,Getting started guide,airguard-frontend/docs/
+Documentation,Frontend Detailed,docs/security.md,airguard-frontend/docs/,Kept,Security documentation,airguard-frontend/docs/
+Documentation,Frontend Detailed,docs/api/README.md,airguard-frontend/docs/api/,Kept,API documentation,airguard-frontend/docs/api/
+Documentation,Frontend Detailed,docs/backend/README.md,airguard-frontend/docs/backend/,Kept,Backend integration docs,airguard-frontend/docs/backend/
+Documentation,Frontend Detailed,docs/database/README.md,airguard-frontend/docs/database/,Kept,Database documentation,airguard-frontend/docs/database/
+Documentation,Frontend Detailed,docs/frontend/README.md,airguard-frontend/docs/frontend/,Kept,Frontend details,airguard-frontend/docs/frontend/
+Documentation,IoT Hardware,PIN-CONNECTIONS.md,airguard-esp32-iot-postgresql/,Kept,ESP32 wiring diagrams,airguard-esp32-iot-postgresql/
+Documentation,IoT Hardware,SETUP-LINUX.md,airguard-esp32-iot-postgresql/,Kept,Linux serial setup,airguard-esp32-iot-postgresql/
+Documentation,IoT Hardware,TESTING-GUIDE.md,airguard-esp32-iot-postgresql/,Kept,Hardware testing,airguard-esp32-iot-postgresql/
+Documentation,IoT Hardware,SCRIPTS.md,airguard-esp32-iot-postgresql/,Kept,Helper scripts,airguard-esp32-iot-postgresql/
+Documentation,IoT Hardware,INTEGRATION.md,airguard-esp32-iot-postgresql/,Kept,Integration guide,airguard-esp32-iot-postgresql/
+Documentation,IoT Hardware,SSH-ACCESS.md,airguard-esp32-iot-postgresql/,Kept,SSH setup,airguard-esp32-iot-postgresql/
+Documentation,IoT Hardware,README.md,airguard-esp32-iot-postgresql/,Kept,IoT main documentation,airguard-esp32-iot-postgresql/
+Documentation,NetWatch,API_SUMMARY.md,netwatch.new/,Kept,API reference,netwatch.new/
+Documentation,NetWatch,QUICKSTART.md,netwatch.new/,Kept,Quick start,netwatch.new/
+Documentation,NetWatch,MONITOR_MODE_GUIDE.md,netwatch.new/,Kept,Monitor mode setup,netwatch.new/
+Documentation,NetWatch,LOGGING_INFO.md,netwatch.new/,Kept,Logging config,netwatch.new/
+Documentation,NetWatch,DASHBOARD_GUIDE.md,netwatch.new/,Kept,Dashboard usage,netwatch.new/
+Documentation,NetWatch,INSTALL.md,netwatch.new/,Kept,Installation,netwatch.new/
+Documentation,NetWatch,FIX_JSON_ERROR.md,netwatch.new/,Kept,Troubleshooting,netwatch.new/
+Documentation,NetWatch,RENABLE_MONITOR_FIX.md,netwatch.new/,Kept,Monitor fixes,netwatch.new/
+Documentation,NetWatch,README.md,netwatch.new/,Kept,NetWatch main docs,netwatch.new/
+Documentation,NetWatch API,README.md,netwatch.new/api/,Modified,Updated copyright,netwatch.new/api/
+Code,Backend Service,netwatchService.ts,airguard-backend/src/services/,Created,NetWatch integration,airguard-backend/src/services/
+Code,Backend Controller,netwatchController.ts,airguard-backend/src/controllers/,Created,NetWatch endpoints,airguard-backend/src/controllers/
+Code,Backend Routes,index.ts,airguard-backend/src/,Modified,Added NetWatch routes,airguard-backend/src/
+Code,Frontend API,api.ts,airguard-frontend/src/services/,Modified,Pairing and NetWatch methods,airguard-frontend/src/services/
+Code,Frontend Component,DeviceSetupTable.tsx,airguard-frontend/src/components/dashboard/,Modified,Real pairing integration,airguard-frontend/src/components/dashboard/
+Code,NetWatch API,rest_api.py,netwatch.new/api/,Renamed,From .download extension,netwatch.new/api/
+Scripts,Deployment,deploy-jetson.sh,Root,Created,Automated Jetson deployment,Root
+Scripts,Deployment,deploy-local.sh,Root,Created,Local deployment (no clone),Root
+Scripts,Deployment,start-integration.sh,Root,Created,Start dev services,Root
+Scripts,Deployment,stop-integration.sh,Root,Created,Stop services,Root
+Configuration,Backend,.env.example,airguard-backend/,Created,Environment template,airguard-backend/
+Configuration,Backend,.env,airguard-backend/,Created,Active configuration,airguard-backend/
+Configuration,MQTT,.env,airguard-esp32-iot-postgresql/mqtt-broker/,Created,MQTT broker config,airguard-esp32-iot-postgresql/mqtt-broker/
+Configuration,Gateway,.env,airguard-esp32-iot-postgresql/host/python-gateway/,Created,Python gateway config,airguard-esp32-iot-postgresql/host/python-gateway/
